@@ -20,7 +20,6 @@ const useGetOrders: OrdersRepository["useGetOrders"] = (forceResource) => {
   const { data } = useQuery({
     queryFn: async () => {
       const orders = await gateway.getOrders();
-      console.log("useGetOrders.orders", orders);
       return orders;
     },
     queryKey: getOrdersKey,
@@ -37,7 +36,6 @@ const useGetOrdersQueryState: OrdersRepository["useGetOrdersQueryState"] = (forc
   return useQuery({
     queryFn: async () => {
       const orders = await gateway.getOrders();
-      console.log("useGetOrdersQueryState.orders", orders);
       return orders;
     },
     queryKey: getOrdersKey,
