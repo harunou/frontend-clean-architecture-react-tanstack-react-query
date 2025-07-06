@@ -160,7 +160,7 @@ describe(`${useOrderByIdSelector.name}: Delete Order and Item`, () => {
     });
   });
 
-  it.only<IntegrationTestContext>("deletes an order and then deletes an item from a remaining order (with in memory gateway)", async (context) => {
+  it<IntegrationTestContext>("deletes an order and then deletes an item from a remaining order (with in memory gateway)", async (context) => {
     restoreMockedUseOrdersGateway();
 
     const initialOrders = context.orderEntities;

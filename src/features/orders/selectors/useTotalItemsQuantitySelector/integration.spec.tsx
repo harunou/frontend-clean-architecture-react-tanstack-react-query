@@ -5,7 +5,7 @@ import { memo, type FC, type PropsWithChildren } from "react";
 import type { UserEvent } from "@testing-library/user-event";
 import { output } from "../../../../utils/testing";
 import { ordersRepository } from "../../repositories";
-import type { OrderEntity } from "../../types";
+import type { OrderEntity, OrderEntityId, ItemEntityId } from "../../types";
 import { makeItemEntityId, makeOrderEntityId } from "../../utils";
 import {
   resetOrderEntitiesFactories,
@@ -33,8 +33,11 @@ const outputTestId = "output-test-id";
 const deleteOrderButtonTestId = "delete-order-button-test-id";
 const deleteItemButtonTestId = "delete-item-button-test-id";
 
-describe(`${useTotalItemsQuantitySelector.name} Integration Test`, () => {
-  beforeEach<LocalTestContext>((context) => {
+describe(`${useTotalItemsQuantitySelector.name} Integration Test for Order deletion`, () => {
+  type OrderDeletionTextContext = LocalTestContext & {
+    Sut: FC<{ orderId: OrderEntityId }>;
+  };
+  beforeEach<OrderDeletionTextContext>((context) => {
     vi.useFakeTimers();
 
     resetOrderEntitiesFactories();
@@ -45,16 +48,8 @@ describe(`${useTotalItemsQuantitySelector.name} Integration Test`, () => {
     context.orders = makeOrderEntities();
     context.mockedOrdersGateway = mockUseOrdersGateway();
     context.inMemoryOrdersGateway = InMemoryOrdersGateway.make();
-  });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-    vi.useRealTimers();
-  });
-
-  it<LocalTestContext>("changes value once an order is deleted (mocked gateway)", async (context) => {
-    const fakeOrderId = makeOrderEntityId("9000");
-    const Component: FC = memo(() => {
+    const Component: FC<{ orderId: OrderEntityId }> = memo((props) => {
       const quantity = useTotalItemsQuantitySelector();
       const { mutateAsync: deleteOrder } = ordersRepository.useDeleteOrder("local");
       return (
@@ -66,16 +61,23 @@ describe(`${useTotalItemsQuantitySelector.name} Integration Test`, () => {
           </div>
           <button
             data-testid={deleteOrderButtonTestId}
-            onClick={() => deleteOrder({ orderId: fakeOrderId })}
+            onClick={() => deleteOrder({ orderId: props.orderId })}
           ></button>
         </>
       );
     });
-    const Sut: FC = () => (
+    context.Sut = (props) => (
       <context.Fixture>
-        <Component />
+        <Component {...props} />
       </context.Fixture>
     );
+  });
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.useRealTimers();
+  });
+  it<OrderDeletionTextContext>("changes value once an order is deleted (mocked gateway)", async (context) => {
+    const fakeOrderId = makeOrderEntityId("9000");
 
     const initialOrders = context.orders.slice();
     const tailOrders = context.orders.slice(1);
@@ -85,7 +87,7 @@ describe(`${useTotalItemsQuantitySelector.name} Integration Test`, () => {
       .mockResolvedValueOnce(tailOrders);
     context.mockedOrdersGateway.deleteOrder.mockResolvedValueOnce();
 
-    render(<Sut />);
+    render(<context.Sut orderId={fakeOrderId} />);
 
     await vi.runAllTimersAsync();
 
@@ -100,37 +102,14 @@ describe(`${useTotalItemsQuantitySelector.name} Integration Test`, () => {
     });
   });
 
-  it<LocalTestContext>("changes value once an order is deleted (in-memory gateway)", async (context) => {
+  it<OrderDeletionTextContext>("changes value once an order is deleted (in-memory gateway)", async (context) => {
     restoreMockedUseOrdersGateway();
 
     const orderId = context.orders.at(0)!.id;
-    const Component: FC = memo(() => {
-      const quantity = useTotalItemsQuantitySelector();
-      const { mutateAsync: deleteOrder } = ordersRepository.useDeleteOrder("local");
-      return (
-        <>
-          <div data-testid={outputTestId}>
-            {output<Output>({
-              quantity,
-            })}
-          </div>
-          <button
-            data-testid={deleteOrderButtonTestId}
-            onClick={() => deleteOrder({ orderId })}
-          ></button>
-        </>
-      );
-    });
-
-    const Sut: FC = () => (
-      <context.Fixture>
-        <Component />
-      </context.Fixture>
-    );
 
     context.inMemoryOrdersGateway.setOrders(context.orders);
 
-    render(<Sut />);
+    render(<context.Sut orderId={orderId} />);
 
     await vi.runAllTimersAsync();
 
@@ -148,12 +127,25 @@ describe(`${useTotalItemsQuantitySelector.name} Integration Test`, () => {
       quantity: 1460,
     });
   });
+});
 
-  it<LocalTestContext>("changes value once an order deletion is followed by an item deletion (mocked gateway)", async (context) => {
-    const fakeOrderId = makeOrderEntityId("9000");
-    const fakeItemId = makeItemEntityId("9000");
+describe(`${useTotalItemsQuantitySelector.name} Integration Test for Order deletion followed by item deletion`, () => {
+  type OrderAndItemDeletionTestContext = LocalTestContext & {
+    Sut: FC<{ orderId: OrderEntityId; itemId: ItemEntityId }>;
+  };
+  beforeEach<OrderAndItemDeletionTestContext>((context) => {
+    vi.useFakeTimers();
 
-    const Component: FC = memo(() => {
+    resetOrderEntitiesFactories();
+
+    const { Fixture, user } = makeComponentFixture();
+    context.Fixture = Fixture;
+    context.user = user;
+    context.orders = makeOrderEntities();
+    context.mockedOrdersGateway = mockUseOrdersGateway();
+    context.inMemoryOrdersGateway = InMemoryOrdersGateway.make();
+
+    const Component: FC<{ orderId: OrderEntityId; itemId: ItemEntityId }> = memo((props) => {
       const quantity = useTotalItemsQuantitySelector();
       const { mutateAsync: deleteOrder } = ordersRepository.useDeleteOrder("local");
       const { mutateAsync: deleteItem } = ordersRepository.useDeleteOrderItem("local");
@@ -166,21 +158,30 @@ describe(`${useTotalItemsQuantitySelector.name} Integration Test`, () => {
           </div>
           <button
             data-testid={deleteOrderButtonTestId}
-            onClick={() => deleteOrder({ orderId: fakeOrderId })}
+            onClick={() => deleteOrder({ orderId: props.orderId })}
           ></button>
           <button
             data-testid={deleteItemButtonTestId}
-            onClick={() => deleteItem({ orderId: fakeOrderId, itemId: fakeItemId })}
+            onClick={() => deleteItem({ orderId: props.orderId, itemId: props.itemId })}
           ></button>
         </>
       );
     });
-
-    const Sut: FC = () => (
+    context.Sut = (props) => (
       <context.Fixture>
-        <Component />
+        <Component {...props} />
       </context.Fixture>
     );
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.useRealTimers();
+  });
+
+  it<OrderAndItemDeletionTestContext>("changes value once an order deletion is followed by an item deletion (mocked gateway)", async (context) => {
+    const fakeOrderId = makeOrderEntityId("9000");
+    const fakeItemId = makeItemEntityId("9000");
 
     const initialOrders = context.orders.slice();
     const tailOrders = context.orders.slice(1);
@@ -198,8 +199,10 @@ describe(`${useTotalItemsQuantitySelector.name} Integration Test`, () => {
       .mockResolvedValueOnce(initialOrders)
       .mockResolvedValueOnce(tailOrders)
       .mockResolvedValueOnce(tailOrdersWithTailItems);
+    context.mockedOrdersGateway.deleteOrder.mockResolvedValueOnce();
+    context.mockedOrdersGateway.deleteItem.mockResolvedValueOnce();
 
-    render(<Sut />);
+    render(<context.Sut orderId={fakeOrderId} itemId={fakeItemId} />);
 
     await vi.runAllTimersAsync();
 
@@ -224,45 +227,16 @@ describe(`${useTotalItemsQuantitySelector.name} Integration Test`, () => {
     });
   });
 
-  it<LocalTestContext>("changes value once an order deletion is followed by an item deletion (in-memory gateway)", async (context) => {
+  it<OrderAndItemDeletionTestContext>("changes value once an order deletion is followed by an item deletion (in-memory gateway)", async (context) => {
     restoreMockedUseOrdersGateway();
 
     const orderIdToDelete = context.orders.at(0)!.id;
-    const orderId = context.orders.at(1)!.id;
-    const itemIdToDelete = context.orders.at(1)!.itemEntities.at(0)!.id;
-
-    const Component: FC = memo(() => {
-      const quantity = useTotalItemsQuantitySelector();
-      const { mutateAsync: deleteOrder } = ordersRepository.useDeleteOrder("local");
-      const { mutateAsync: deleteItem } = ordersRepository.useDeleteOrderItem("local");
-      return (
-        <>
-          <div data-testid={outputTestId}>
-            {output<Output>({
-              quantity,
-            })}
-          </div>
-          <button
-            data-testid={deleteOrderButtonTestId}
-            onClick={() => deleteOrder({ orderId: orderIdToDelete })}
-          ></button>
-          <button
-            data-testid={deleteItemButtonTestId}
-            onClick={() => deleteItem({ orderId: orderId, itemId: itemIdToDelete })}
-          ></button>
-        </>
-      );
-    });
-
-    const Sut: FC = () => (
-      <context.Fixture>
-        <Component />
-      </context.Fixture>
-    );
+    const remainingOrder = context.orders.at(1)!;
+    const itemIdToDelete = remainingOrder.itemEntities.at(0)!.id;
 
     context.inMemoryOrdersGateway.setOrders(context.orders);
 
-    render(<Sut />);
+    const { rerender } = render(<context.Sut orderId={orderIdToDelete} itemId={itemIdToDelete} />);
 
     await vi.runAllTimersAsync();
 
@@ -279,7 +253,10 @@ describe(`${useTotalItemsQuantitySelector.name} Integration Test`, () => {
       quantity: 1460,
     });
 
-    // Step 2: Delete item from remaining order
+    // Step 2: Rerender with the remaining order and delete item from it
+    rerender(<context.Sut orderId={remainingOrder.id} itemId={itemIdToDelete} />);
+    await vi.runAllTimersAsync();
+
     const deleteItemButton = screen.getByTestId(deleteItemButtonTestId);
     context.user.click(deleteItemButton);
     await vi.runAllTimersAsync();
