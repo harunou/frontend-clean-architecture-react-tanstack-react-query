@@ -1,17 +1,17 @@
 import type { FC } from "react";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import { ordersTestId, totalItemQuantityTestId } from "../../testIds";
 import { useController, usePresenter } from "./hooks";
 import { Order } from "../Order";
 import { OrdersResourcePicker } from "../OrdersResourcePicker";
 
-export const Orders: FC = () => {
+export const Orders: FC = memo(() => {
   const presenter = usePresenter();
-  const { moduleDestroyed } = useController();
+  const controller = useController();
 
   useEffect(() => {
-    return () => moduleDestroyed();
-  }, [moduleDestroyed]);
+    return () => controller.moduleDestroyed();
+  }, [controller]);
 
   return (
     <div data-testid={ordersTestId}>
@@ -28,6 +28,6 @@ export const Orders: FC = () => {
       ))}
     </div>
   );
-};
+});
 
 Orders.displayName = "Orders";

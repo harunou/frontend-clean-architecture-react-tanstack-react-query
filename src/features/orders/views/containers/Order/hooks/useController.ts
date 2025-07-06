@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import type { Controller } from "../Order.types";
 import type { OrderEntityId } from "../../../../types";
 import { useDeleteOrderUseCase } from "../../../../useCases";
@@ -10,7 +10,10 @@ export const useController = (params: { orderId: OrderEntityId }): Controller =>
     executeDeleteOrderUseCase(params);
   }, [executeDeleteOrderUseCase, params]);
 
-  return {
-    deleteOrderButtonClicked,
-  };
+  return useMemo(
+    () => ({
+      deleteOrderButtonClicked,
+    }),
+    [deleteOrderButtonClicked],
+  );
 };

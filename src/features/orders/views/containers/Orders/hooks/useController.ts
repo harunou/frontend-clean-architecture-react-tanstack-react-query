@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import type { Controller } from "../Orders.types";
 import { ordersRepository } from "../../../../repositories";
 
@@ -9,5 +9,5 @@ export const useController = (): Controller => {
     cancelAllQueries();
   }, [cancelAllQueries]);
 
-  return { moduleDestroyed };
+  return useMemo(() => ({ moduleDestroyed }), [moduleDestroyed]);
 };

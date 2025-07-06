@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import type { Controller } from "../../OrderItem.types";
 import type { ItemEntityId, OrderEntityId } from "../../../../../types";
 import { ordersRepository } from "../../../../../repositories";
@@ -13,7 +13,10 @@ export const useController = (params: {
     await deleteOrderItem(params);
   }, [deleteOrderItem, params]);
 
-  return {
-    deleteOrderItemButtonClicked,
-  };
+  return useMemo(
+    () => ({
+      deleteOrderItemButtonClicked,
+    }),
+    [deleteOrderItemButtonClicked],
+  );
 };
