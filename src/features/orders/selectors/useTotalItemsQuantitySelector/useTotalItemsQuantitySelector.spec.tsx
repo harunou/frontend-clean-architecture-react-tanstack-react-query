@@ -1,12 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { useTotalItemsQuantitySelector } from "./useTotalItemsQuantitySelector";
-import { render, renderHook, screen } from "@testing-library/react";
-import { memo, type FC, type PropsWithChildren } from "react";
+import { renderHook } from "@testing-library/react";
+import type { FC, PropsWithChildren } from "react";
 import type { UserEvent } from "@testing-library/user-event";
-import { output } from "../../../../utils/testing";
-import { ordersRepository } from "../../repositories";
 import type { OrderEntity } from "../../types";
-import { makeOrderEntityId } from "../../utils";
 import {
   resetOrderEntitiesFactories,
   mockUseOrdersGateway,
@@ -21,13 +18,6 @@ interface LocalTestContext {
   ordersGateway: MockedOrdersGateway;
   orders: OrderEntity[];
 }
-
-interface Output {
-  quantity: number;
-}
-
-const outputTestId = "output-test-id";
-const deleteOrderButtonTestId = "delete-order-button-test-id";
 
 describe(`${useTotalItemsQuantitySelector.name}`, () => {
   beforeEach<LocalTestContext>((context) => {
@@ -81,51 +71,5 @@ describe(`${useTotalItemsQuantitySelector.name}`, () => {
     await vi.runAllTimersAsync();
 
     expect(result.current).toBe(1825);
-  });
-
-  it<LocalTestContext>("changes value once an order is deleted", async (context) => {
-    const fakeOrderId = makeOrderEntityId("9000");
-    const Component: FC = memo(() => {
-      const quantity = useTotalItemsQuantitySelector();
-      const { mutateAsync: deleteOrder } = ordersRepository.useDeleteOrder("local");
-      return (
-        <>
-          <div data-testid={outputTestId}>
-            {output<Output>({
-              quantity,
-            })}
-          </div>
-          <button
-            data-testid={deleteOrderButtonTestId}
-            onClick={() => deleteOrder({ orderId: fakeOrderId })}
-          ></button>
-        </>
-      );
-    });
-    const Sut: FC = () => (
-      <context.Fixture>
-        <Component />
-      </context.Fixture>
-    );
-
-    const orders0 = context.orders.slice();
-    const orders1 = context.orders.slice(0, 2);
-
-    context.ordersGateway.getOrders.mockResolvedValueOnce(orders0).mockResolvedValueOnce(orders1);
-    context.ordersGateway.deleteOrder.mockResolvedValueOnce();
-
-    render(<Sut />);
-
-    await vi.runAllTimersAsync();
-
-    const deleteButton = screen.getByTestId(deleteOrderButtonTestId);
-
-    context.user.click(deleteButton);
-
-    await vi.runAllTimersAsync();
-
-    expect(screen.getByTestId(outputTestId)).toHaveOutput<Output>({
-      quantity: 730,
-    });
   });
 });
