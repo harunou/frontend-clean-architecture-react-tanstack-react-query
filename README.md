@@ -101,7 +101,8 @@ Here is the dependency graph:
 │       │       ├── RemoteOrdersGateway.spec.ts
 │       │       └── RemoteOrdersGateway.ts
 │       ├── ordersRepositoryKeys.ts
-│       └── ordersRepository.ts
+│       ├── ordersRepository.ts
+│       └── ordersRepository.utils.ts
 ├── selectors
 │   ├── index.ts
 │   ├── useIsLastItemIdSelector
@@ -114,11 +115,19 @@ Here is the dependency graph:
 │   │   ├── useIsOrdersProcessingSelector.spec.tsx
 │   │   └── useIsOrdersProcessingSelector.ts
 │   ├── useItemByIdSelector.ts
-│   ├── useOrderByIdSelector.ts
-│   ├── useOrderIdsSelector.ts
+│   ├── useOrderByIdSelector
+│   │   ├── index.ts
+│   │   ├── integration.spec.tsx
+│   │   ├── useOrderByIdSelector.spec.tsx
+│   │   └── useOrderByIdSelector.ts
+│   ├── useOrderIdsSelector
+│   │   ├── index.ts
+│   │   ├── useOrderIdsSelector.spec.tsx
+│   │   └── useOrderIdsSelector.ts
 │   ├── useOrdersResourceSelector.ts
 │   └── useTotalItemsQuantitySelector
 │       ├── index.ts
+│       ├── integration.spec.tsx
 │       ├── useTotalItemsQuantitySelector.spec.tsx
 │       └── useTotalItemsQuantitySelector.ts
 ├── stores
@@ -188,6 +197,7 @@ Here is the dependency graph:
     │   │   │   ├── useController.ts
     │   │   │   └── usePresenter.ts
     │   │   ├── index.ts
+    │   │   ├── integration.spec.tsx
     │   │   ├── Orders.spec.tsx
     │   │   ├── Orders.tsx
     │   │   └── Orders.types.ts
@@ -197,5 +207,5 @@ Here is the dependency graph:
     ├── index.ts
     └── testIds.ts
 
-41 directories, 107 files
+43 directories, 115 files
 ```
