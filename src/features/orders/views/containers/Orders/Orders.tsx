@@ -22,7 +22,7 @@ export const Orders: FC = memo(function Orders() {
         Total Items Quantity:{" "}
         <span data-testid={totalItemQuantityTestId}>{presenter.totalItemsQuantity}</span>
       </div>
-      <div>Status: {presenter.isLoading ? "loading..." : "pending"}</div>
+      <div>Status: {presenter.isLoading ? "loading..." : "idle"}</div>
       {presenter.orderIds.map((orderId) => (
         <Order key={orderId} orderId={orderId} />
       ))}

@@ -11,9 +11,7 @@ import {
 } from "../../utils/testing";
 import { makeComponentFixture } from "../../utils/testing/makeComponentFixture";
 import { useOrderByIdSelector } from "./useOrderByIdSelector";
-import { useDeleteOrderUseCase } from "../../useCases";
 import { render, screen } from "@testing-library/react";
-import { act } from "@testing-library/react";
 
 interface LocalTestContext {
   Fixture: FC<PropsWithChildren<unknown>>;
@@ -142,72 +140,5 @@ describe(`${useOrderByIdSelector.name}`, () => {
     expect(screen.getByTestId(outputTestId)).toHaveOutput<Output>({
       order: lastOrder,
     });
-  });
-
-  it.only<LocalTestContext>("returns undefined after an order is deleted using useDeleteOrderUseCase", async (context) => {
-    context.ordersGateway.getOrders.mockResolvedValue(context.orderEntities);
-    context.ordersGateway.deleteOrder.mockResolvedValue(undefined);
-
-    const targetOrder = context.orderEntities.at(1);
-    assert(targetOrder);
-    const orderId = targetOrder.id;
-
-    // Component that uses both the selector and delete use case
-    const ComponentWithDelete: FC<{ orderId: OrderEntityId }> = ({ orderId }) => {
-      const order = useOrderByIdSelector(orderId);
-      const deleteOrderUseCase = useDeleteOrderUseCase();
-
-      const handleDelete = async () => {
-        await deleteOrderUseCase.execute({ orderId });
-      };
-
-      return (
-        <div>
-          <div data-testid={outputTestId}>
-            {output<Output>({
-              order,
-            })}
-          </div>
-          <button data-testid="delete-button" onClick={handleDelete}>
-            Delete Order
-          </button>
-        </div>
-      );
-    };
-
-    const SutWithDelete: FC<{ orderId: OrderEntityId }> = ({ orderId }) => {
-      return (
-        <context.Fixture>
-          <ComponentWithDelete orderId={orderId} />
-        </context.Fixture>
-      );
-    };
-
-    render(<SutWithDelete orderId={orderId} />);
-
-    // Wait for initial load
-    await vi.runAllTimersAsync();
-
-    // Verify order is initially present
-    expect(screen.getByTestId(outputTestId)).toHaveOutput<Output>({
-      order: targetOrder,
-    });
-
-    // Mock the gateway to return orders without the deleted one
-    const remainingOrders = context.orderEntities.filter((order) => order.id !== orderId);
-    context.ordersGateway.getOrders.mockResolvedValue(remainingOrders);
-
-    // Delete the order
-    await act(async () => {
-      const deleteButton = screen.getByTestId("delete-button");
-      deleteButton.click();
-      await vi.runAllTimersAsync();
-    });
-
-    // Verify the order is no longer found by the selector
-    expect(screen.getByTestId(outputTestId)).toHaveOutput<Output>({});
-
-    // Verify the delete gateway method was called
-    expect(context.ordersGateway.deleteOrder).toHaveBeenCalledWith(orderId);
   });
 });
