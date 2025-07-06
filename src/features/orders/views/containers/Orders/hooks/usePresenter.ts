@@ -4,16 +4,15 @@ import {
   useOrderIdsSelector,
   useTotalItemsQuantitySelector,
 } from "../../../../selectors";
-import { useMemoRecord } from "../../../../../../utils";
 
 export const usePresenter = (): Presenter => {
   const isLoading = useIsOrdersProcessingSelector();
   const orderIds = useOrderIdsSelector();
   const totalItemsQuantity = useTotalItemsQuantitySelector();
 
-  return useMemoRecord({
+  return {
     isLoading: isLoading,
     orderIds,
     totalItemsQuantity,
-  });
+  };
 };

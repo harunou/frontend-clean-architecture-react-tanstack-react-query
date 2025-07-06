@@ -1,10 +1,9 @@
 import type { FC } from "react";
-import { memo } from "react";
 import { deleteItemButtonTestId, orderItemTestId } from "../../testIds";
 import type { OrderItemProps } from "./OrderItem.types";
 import { useController, usePresenter } from "./hooks";
 
-export const OrderItem: FC<OrderItemProps> = memo((props) => {
+export const OrderItem: FC<OrderItemProps> = (props) => {
   const presenter = usePresenter(props);
   const { deleteOrderItemButtonClicked } = useController(props);
 
@@ -28,6 +27,6 @@ export const OrderItem: FC<OrderItemProps> = memo((props) => {
       <div>quantity: {presenter.productQuantity}</div>
     </div>
   );
-});
+};
 
 OrderItem.displayName = "OrderItem";

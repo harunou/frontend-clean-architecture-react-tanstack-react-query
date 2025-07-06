@@ -1,11 +1,10 @@
 import type { FC } from "react";
-import { memo } from "react";
 import type { OrderParams } from "./Order.types";
 import { OrderItem } from "../OrderItem";
 import { deleteOrderButtonTestId, orderTestId } from "../../testIds";
 import { useController, usePresenter } from "./hooks";
 
-export const Order: FC<OrderParams> = memo((props) => {
+export const Order: FC<OrderParams> = (props) => {
   const presenter = usePresenter(props);
   const { deleteOrderButtonClicked } = useController(props);
 
@@ -39,6 +38,6 @@ export const Order: FC<OrderParams> = memo((props) => {
       </details>
     </div>
   );
-});
+};
 
 Order.displayName = "Order";
