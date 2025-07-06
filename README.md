@@ -5,7 +5,7 @@ This repository showcases a frontend application built using the principles of
 
 It demonstrates that applying Clean Architecture in frontend development doesn't
 have to lead to unnecessary complexity or over-engineering. Instead, it can
-simplify the development process while providing the full benefits  of this
+simplify the development process while providing the full benefits of this
 architectural style.
 
 For more context, you can read these articles:
