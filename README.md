@@ -1,45 +1,51 @@
-# Clean Architecture for frontend applications
+# Frontend Clean Architecture
 
-This project demonstrates
-[Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
-in a frontend application with React, TanStack React Query and Zustand.
+This repository showcases a frontend application built using the principles of
+[Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html).
 
-The project demonstrates that applying Clean Architecture principles in frontend
-applications does not have to lead to unnecessary 🤯 complexity or
-over-engineering. Instead, it simplifies the development process while providing
-all the benefits 💡 of Clean Architecture.
+It demonstrates that applying Clean Architecture in frontend development doesn't
+have to lead to unnecessary complexity or over-engineering. Instead, it can
+simplify the development process while providing the full benefits  of this
+architectural style.
 
-A brief overview of the concept can be found here:
+For more context, you can read these articles:
 
 - [Frontend Clean Architecture: Practical Insights and Pitfalls](https://dev.to/harunou/clean-architecture-practical-insights-and-pitfalls-1mdj)
 - [Clean Architecture for Frontend Applications](https://dev.to/harunou/clean-architecture-in-frontend-applications-overview-4o89)
 
-## Extending Basic Clean Architecture Implementation
+## Clean Architecture Implementation
 
-This application uses TanStack React Query for server state management and
-synchronization states, which is a natural fit for a repository unit.
+A basic implementation of Clean Architecture for a typical frontend application
+with a store and API integration is as follows:
 
-The following diagram illustrates the Clean Architecture implementation with a
-repository unit. The current application follows it.
+![fe-ca-basic-diagram](docs/fe-ca-diagram.svg)
+
+This implementation is framework-agnostic and can be used with any modern
+reactive frontend framework, like React, Vue, Svelte, or Angular.
+
+This application, however, uses TanStack React Query for server state management
+and synchronization states, which fits naturally into a repository unit.
+
+The following diagram illustrates an extended Clean Architecture implementation
+that includes a repository unit, which this application follows.
 
 ![fe-ca-diagram-repository](docs/ca-fe-diagram-repository.svg)
 
-- The _Repository unit_ is responsible for managing server state, maintaining
-  synchronization states, and providing a consistent interface for the rest of
-  the application.
-- The _Gateway unit_ abstracts and communicates with the API, transforming data
-  into a format suitable for the repository unit. Using a gateway is recommended
-  when the application has multiple API endpoints (e.g., an entity is built from
-  multiple external resources) or stores data in different locations (e.g., in
-  memory, on a server, or in browser storage).
+- The **Repository unit** is responsible for managing server state, handling
+  synchronization, and providing a consistent data interface to the rest of the
+  application.
+- The **Gateway unit** abstracts communication with the API, transforming data
+  into a format suitable for the repository. Using a gateway is recommended when
+  an application deals with multiple API endpoints or stores data in various
+  locations (e.g., in-memory, on a server, or in browser storage).
 
-## Dependency Graphs
+## Dependency Graph
 
-Dependency graph of the code units.
+Here is the dependency graph:
 
 ![dependency overview](dependency-graph.svg)
 
-## File Structure of Orders Module
+## File Structure of the Orders Module
 
 ```console
 ./src/features/orders
