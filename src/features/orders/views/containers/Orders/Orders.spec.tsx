@@ -47,7 +47,7 @@ describe(`${Orders.displayName}`, () => {
 
     expect(screen.getByTestId(ordersTestId)).toBeInTheDocument();
     expect(screen.getByTestId(totalItemQuantityTestId)).toHaveTextContent("5");
-    expect(screen.getByText("Status: pending")).toBeInTheDocument();
+    expect(screen.getByText("Status: idle")).toBeInTheDocument();
     orderIds.forEach((id) => {
       expect(screen.getByTestId(`order-${id}`)).toBeInTheDocument();
     });
@@ -64,7 +64,7 @@ describe(`${Orders.displayName}`, () => {
 
     expect(screen.getByTestId(ordersTestId)).toBeInTheDocument();
     expect(screen.getByTestId(totalItemQuantityTestId)).toHaveTextContent("0");
-    expect(screen.getByText("Status: pending")).toBeInTheDocument();
+    expect(screen.getByText("Status: idle")).toBeInTheDocument();
     expect(screen.queryByTestId(/^order-/)).not.toBeInTheDocument();
   });
 

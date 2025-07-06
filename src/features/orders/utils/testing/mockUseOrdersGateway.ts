@@ -4,9 +4,9 @@ import type { OrdersGateway } from "../../repositories/ordersRepository/OrdersGa
 
 export type MockedOrdersGateway = Mocked<OrdersGateway>;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const makeNoMockDefined =
   (name: string) =>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (..._args: any[]): any => {
     console.error(`Mock: ${name} method has no mock defined`, {
       args: _args,
