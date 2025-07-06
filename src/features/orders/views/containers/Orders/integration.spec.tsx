@@ -6,7 +6,7 @@ import type { OrderEntity, OrdersResource } from "../../../types";
 import { makeOrderEntities, resetOrderEntitiesFactories } from "../../../utils/testing";
 import { makeComponentFixture } from "../../../utils/testing/makeComponentFixture";
 import { InMemoryOrdersGateway } from "../../../repositories/ordersRepository/OrdersGateway";
-import { totalItemQuantityTestId, deleteItemButtonTestId } from "../../testIds";
+import { deleteItemButtonTestId, totalItemQuantityTestId } from "../../testIds";
 import { Orders } from "./Orders";
 import { deleteOrderButtonTestId } from "../../testIds";
 
@@ -86,7 +86,7 @@ describe(`${Orders.displayName} Integration Test`, () => {
 
     // Step 2: Delete an item from the remaining first order
     // First, expand the details to see items
-    const detailsElements = screen.getAllByText("items");
+    const detailsElements = screen.getAllByTestId(deleteItemButtonTestId);
     context.user.click(detailsElements[0]);
     await vi.runAllTimersAsync();
 

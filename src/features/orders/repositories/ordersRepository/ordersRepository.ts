@@ -18,11 +18,11 @@ const useGetOrders: OrdersRepository["useGetOrders"] = (forceResource) => {
   const getOrdersKey = ordersRepositoryKeys.makeGetOrdersKey(resource);
 
   const { data } = useQuery({
-    queryFn: async () => {
-      const orders = await gateway.getOrders();
-      return orders;
-    },
+    queryFn: async () => gateway.getOrders(),
     queryKey: getOrdersKey,
+    // disable structural sharing, because it cannot detect an update when an
+    // item is deleted from an order.
+    structuralSharing: false,
   });
 
   return { data: data ?? DEFAULT_ORDERS };
