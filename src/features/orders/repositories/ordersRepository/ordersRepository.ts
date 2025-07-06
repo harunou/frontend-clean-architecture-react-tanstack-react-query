@@ -72,7 +72,9 @@ const useDeleteOrderItem: OrdersRepository["useDeleteOrderItem"] = (forceResourc
     mutationFn: async (params: { orderId: OrderEntityId; itemId: ItemEntityId }) => {
       await gateway.deleteItem(params.orderId, params.itemId);
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: getOrdersKey }),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: getOrdersKey });
+    },
   });
 };
 

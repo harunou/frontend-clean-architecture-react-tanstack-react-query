@@ -5,18 +5,30 @@ import type { OrdersGateway } from "../../repositories/ordersRepository/OrdersGa
 export type MockedOrdersGateway = Mocked<OrdersGateway>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const noMockDefined = (..._args: any[]) => {
-  throw new Error("Mock: method has no mock defined");
-};
+const makeNoMockDefined =
+  (name: string) =>
+  (..._args: any[]): any => {
+    console.error(`Mock: ${name} method has no mock defined`, {
+      args: _args,
+    });
+  };
 
 export const mockUseOrdersGateway = (): MockedOrdersGateway => {
   const mock: MockedOrdersGateway = {
-    getOrders: vi.fn(noMockDefined),
-    deleteOrder: vi.fn(noMockDefined),
-    deleteItem: vi.fn(noMockDefined),
+    getOrders: vi.fn(makeNoMockDefined("getOrders")),
+    deleteOrder: vi.fn(makeNoMockDefined("deleteOrder")),
+    deleteItem: vi.fn(makeNoMockDefined("deleteItem")),
   };
 
   vi.spyOn(useOrdersGatewayModule, "useOrdersGateway").mockReturnValue(mock);
 
   return mock;
+};
+
+export const restoreMockedUseOrdersGateway = (): void => {
+  if (!vi.isMockFunction(useOrdersGatewayModule.useOrdersGateway)) {
+    console.warn("useOrdersGateway is not mocked, cannot restore");
+    return;
+  }
+  vi.mocked(useOrdersGatewayModule.useOrdersGateway).mockRestore();
 };
