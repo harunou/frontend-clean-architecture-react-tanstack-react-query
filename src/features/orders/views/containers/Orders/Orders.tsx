@@ -7,11 +7,11 @@ import { OrdersResourcePicker } from "../OrdersResourcePicker";
 
 export const Orders: FC = memo(function Orders() {
   const presenter = usePresenter();
-  const controller = useController();
+  const { moduleDestroyed } = useController();
 
   useEffect(() => {
-    return () => controller.moduleDestroyed();
-  }, [controller]);
+    return () => moduleDestroyed();
+  }, [moduleDestroyed]);
 
   return (
     <div data-testid={ordersTestId}>

@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 import type { Controller } from "../../OrderItem.types";
 import type { ItemEntityId, OrderEntityId } from "../../../../../types";
-import { useMemoRecord } from "../../../../../../../utils";
 import { ordersRepository } from "../../../../../repositories";
 
 export const useController = (params: {
@@ -14,7 +13,7 @@ export const useController = (params: {
     await deleteOrderItem(params);
   }, [deleteOrderItem, params]);
 
-  return useMemoRecord({
+  return {
     deleteOrderItemButtonClicked,
-  });
+  };
 };
