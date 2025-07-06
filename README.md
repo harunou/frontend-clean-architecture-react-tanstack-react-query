@@ -1,113 +1,54 @@
-# Clean Architecture Implementation for React Application with Tanstack React Query and Zustand
+# Frontend Clean Architecture
 
-This project demonstrates a
-[Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
-implementation in a React application using TanStack React Query and Zustand.
+This repository showcases a frontend application built using the principles of
+[Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html).
 
-By applying Clean Architecture principles, this project maintains structural
-integrity, remains straightforward and 💡 easy to understand. The project
-demonstrates that implementing Clean Architecture in frontend applications
-doesn't have to result in unnecessary 🤯 complexity or overengineering.
+It demonstrates that applying Clean Architecture in frontend development doesn't
+have to lead to unnecessary complexity or over-engineering. Instead, it can
+simplify the development process while providing the full benefits of this
+architectural style.
 
-## Benefits
+For more context, you can read these articles:
 
-1. Limited context and low cognitive load, when working with a codebase.
-2. Independent, reusable and portable code units with separated concerns.
-3. Unified control and data flow throughout the application.
-4. Testable code with clear boundaries for unit and integration tests, where
-   tests are inline application specifications.
-
-Apart from human developers, these benefits apply well to AI assistants, helping
-reduce code entropy through multiple repeated iterations.
+- [Frontend Clean Architecture: Practical Insights and Pitfalls](https://dev.to/harunou/clean-architecture-practical-insights-and-pitfalls-1mdj)
+- [Clean Architecture for Frontend Applications](https://dev.to/harunou/clean-architecture-in-frontend-applications-overview-4o89)
 
 ## Clean Architecture Implementation
 
-The diagram below represents a basic implementation of Clean Architecture for a
-typical frontend application with a store and API integration. The
-implementation can be used with any modern reactive frontend framework, like
-React, Vue, Svelte, or Angular.
+A basic implementation of Clean Architecture for a typical frontend application
+with a store and API integration is as follows:
 
-![basic-clean-architecture-implementation](docs/fe-ca-diagram.svg)
+![fe-ca-basic-diagram](docs/fe-ca-diagram.svg)
 
-The next diagram represents an extended implementation of Clean Architecture for
-a typical frontend application. The diagram shows additional units into which an
-application can be factored.
+This implementation is framework-agnostic and can be used with any modern
+reactive frontend framework, like React, Vue, Svelte, or Angular.
 
-![advanced-clean-architecture-implementation](docs/fe-ca-diagram-extended.svg)
+This application, however, uses TanStack React Query for server state management
+and synchronization states, which fits naturally into a repository unit.
 
-> NOTE: the double lines on both diagrams are representing the boundaries
-> between the units. Typically the data that crosses the boundaries is simple
-> data structures, for example Data Transfer Objects (DTOs) or plain objects.
+The following diagram illustrates an extended Clean Architecture implementation
+that includes a repository unit, which this application follows.
 
-## Definition of units
+![fe-ca-diagram-repository](docs/ca-fe-diagram-repository.svg)
 
-- **Entities Store**: An aggregate unit that maintains a collection of enterprise
-  business entities and/or application business entities and their states.
-- **Use Case Interactor**: Unit that orchestrates the flow of data in the
-  application by coordinating entities, gateways, and transactions to fulfill
-  specific user goals, implements application business rules.
-- **Transaction**: Unit with logic that transitions a store between two valid
-  states, ensuring business rules are maintained.
-- **Selector**: Unit that derives values or data structures from the state
-  without modifying it, implementing read-only queries against the state,
-  implements application business rules.
-- **Gateway**: Unit that isolates external resources by providing interfaces for
-  data access, mapping data from external resources into entities, and potentially
-  caching data.
-- **Effect**: Unit that is responsible for encapsulating logic that interacts with
-  external resources through gateways, managing side effects, and handling
-  asynchronous operations.
-- **Controller**: Unit that handles input data from the view and converts it
-  into use case invocations.
-- **Presenter**: Unit that transforms the application state into output data
-  suitable for the view, often using selectors.
-- **View**: Unit that is responsible for displaying information to the user
-  based on the data prepared by the presenter and for capturing user input and
-  transferring it to the controller.
-- **External Resource**: External systems or services that the application
-  interacts with, such as APIs, databases, storages, or other applications.
-
-## Definition of concepts utilized by the units
-
-- **Enterprise Business Entity**: Unit that encapsulates enterprise
-  business rules and data.
-- **Enterprise Business Rules and Data**: The most general and high-level rules
-  and data that would exist even if the application didn't. These are
-  enterprise-wide rules that rarely change and are independent of any specific
+- The **Repository unit** is responsible for managing server state, handling
+  synchronization, and providing a consistent data interface to the rest of the
   application.
-- **Application Business Entity**: Unit that encapsulates
-  application-specific business rules and data.
-- **Application Business Rules and Data**: Rules and data specific to the
-  application's functionality and presentation. This includes how business
-  concepts are presented to users, interaction flows, UI state management, and
-  application-specific behaviors. These are more likely to change compared to
-  enterprise rules.
-- **State**: The value of a store at a given point in time, typically
-  represented as an object structure.
-- **Valid State**: One of a finite number of store values that is conceptually
-  considered valid according to business and application rules.
+- The **Gateway unit** abstracts communication with the API, transforming data
+  into a format suitable for the repository. Using a gateway is recommended when
+  an application deals with multiple API endpoints or stores data in various
+  locations (e.g., in-memory, on a server, or in browser storage).
 
-## Dependency Graphs
+## Dependency Graph
 
-Dependency graph of the code units.
+Here is the dependency graph:
 
 ![dependency overview](dependency-graph.svg)
 
-## File Structure of Orders Module
+## File Structure of the Orders Module
 
 ```console
 ./src/features/orders
-├── api
-│   ├── api.types.ts
-│   ├── httpClient
-│   │   ├── httpClient.ts
-│   │   └── index.ts
-│   ├── index.ts
-│   └── OrdersApi
-│       ├── index.ts
-│       ├── OrdersApi.factory.ts
-│       ├── OrdersApi.ts
-│       └── OrdersApi.types.ts
 ├── cli
 │   ├── cli.tsx
 │   ├── commands
@@ -126,57 +67,60 @@ Dependency graph of the code units.
 │   ├── hooks
 │   │   └── useConsoleRenderer.ts
 │   └── index.ts
-├── gateways
+├── externalResources
+│   ├── httpClient
+│   │   ├── httpClient.ts
+│   │   └── index.ts
 │   ├── index.ts
-│   └── OrdersGateway
+│   ├── OrdersApi
+│   │   ├── index.ts
+│   │   ├── OrdersApi.factory.ts
+│   │   ├── OrdersApi.ts
+│   │   └── OrdersApi.types.ts
+│   └── types.ts
+├── index.ts
+├── repositories
+│   ├── index.ts
+│   └── ordersRepository
 │       ├── hooks
 │       │   ├── index.ts
-│       │   ├── useDeleteOrderItemKey.ts
-│       │   ├── useDeleteOrderItemOptions.ts
-│       │   ├── useDeleteOrderKey.ts
-│       │   ├── useDeleteOrderOptions.ts
-│       │   ├── useGetOrdersKey.ts
-│       │   ├── useGetOrdersOptions.ts
+│       │   ├── useGatewayResource.ts
 │       │   └── useOrdersGateway.ts
 │       ├── index.ts
-│       ├── LocalOrdersGateway
+│       ├── OrdersGateway
 │       │   ├── index.ts
-│       │   ├── LocalOrdersGateway.spec.ts
-│       │   └── LocalOrdersGateway.ts
-│       ├── makeOrderEntities.ts
-│       └── RemoteOrdersGateway
-│           ├── index.ts
-│           ├── mappers.ts
-│           ├── RemoteOrdersGateway.spec.ts
-│           └── RemoteOrdersGateway.ts
-├── hooks
-│   ├── selectors
+│       │   ├── InMemoryOrdersGateway
+│       │   │   ├── index.ts
+│       │   │   ├── InMemoryOrdersGateway.spec.ts
+│       │   │   └── InMemoryOrdersGateway.ts
+│       │   ├── makeOrderEntities.ts
+│       │   ├── OrdersGateway.types.ts
+│       │   └── RemoteOrdersGateway
+│       │       ├── index.ts
+│       │       ├── mappers.ts
+│       │       ├── RemoteOrdersGateway.spec.ts
+│       │       └── RemoteOrdersGateway.ts
+│       ├── ordersRepositoryKeys.ts
+│       └── ordersRepository.ts
+├── selectors
+│   ├── index.ts
+│   ├── useIsLastItemIdSelector
 │   │   ├── index.ts
-│   │   ├── useIsLastItemIdSelector
-│   │   │   ├── index.ts
-│   │   │   ├── select.spec.ts
-│   │   │   ├── select.ts
-│   │   │   └── useIsLastItemIdSelector.ts
-│   │   ├── useIsLastOrderIdSelector.ts
-│   │   ├── useIsOrdersProcessingSelector
-│   │   │   ├── index.ts
-│   │   │   ├── useIsOrdersProcessingSelector.spec.tsx
-│   │   │   └── useIsOrdersProcessingSelector.ts
-│   │   ├── useItemByIdSelector.ts
-│   │   ├── useOrderByIdSelector.ts
-│   │   ├── useOrderIdsSelector.ts
-│   │   ├── useOrdersResourceSelector.ts
-│   │   └── useTotalItemsQuantitySelector
-│   │       ├── index.ts
-│   │       ├── useTotalItemsQuantitySelector.spec.tsx
-│   │       └── useTotalItemsQuantitySelector.ts
-│   └── useCases
+│   │   ├── useIsLastItemIdSelector.spec.ts
+│   │   └── useIsLastItemIdSelector.ts
+│   ├── useIsLastOrderIdSelector.ts
+│   ├── useIsOrdersProcessingSelector
+│   │   ├── index.ts
+│   │   ├── useIsOrdersProcessingSelector.spec.tsx
+│   │   └── useIsOrdersProcessingSelector.ts
+│   ├── useItemByIdSelector.ts
+│   ├── useOrderByIdSelector.ts
+│   ├── useOrderIdsSelector.ts
+│   ├── useOrdersResourceSelector.ts
+│   └── useTotalItemsQuantitySelector
 │       ├── index.ts
-│       └── useDeleteOrderUseCase
-│           ├── index.ts
-│           ├── useDeleteOrderUseCase.spec.tsx
-│           └── useDeleteOrderUseCase.ts
-├── index.ts
+│       ├── useTotalItemsQuantitySelector.spec.tsx
+│       └── useTotalItemsQuantitySelector.ts
 ├── stores
 │   ├── hooks
 │   │   ├── index.ts
@@ -193,11 +137,17 @@ Dependency graph of the code units.
 │   │   │   ├── index.ts
 │   │   │   └── OrderEntity.ts
 │   │   └── OrdersPresentationEntity.ts
-│   ├── gateways
-│   │   ├── index.ts
-│   │   └── OrdersGateway.ts
 │   ├── index.ts
-│   └── OrdersResource.ts
+│   ├── OrdersResource.ts
+│   └── repositories
+│       ├── index.ts
+│       └── OrdersRepository.ts
+├── useCases
+│   ├── index.ts
+│   └── useDeleteOrderUseCase
+│       ├── index.ts
+│       ├── useDeleteOrderUseCase.spec.tsx
+│       └── useDeleteOrderUseCase.ts
 ├── utils
 │   ├── index.ts
 │   └── testing
@@ -205,8 +155,8 @@ Dependency graph of the code units.
 │       ├── itemEntityFactory.ts
 │       ├── makeComponentFixture.tsx
 │       ├── makeOrderEntities.ts
-│       ├── orderEntityFactory.ts
-│       └── stubUseOrdersGateway.ts
+│       ├── mockUseOrdersGateway.ts
+│       └── orderEntityFactory.ts
 └── views
     ├── containers
     │   ├── index.ts
@@ -246,4 +196,6 @@ Dependency graph of the code units.
     │       └── OrdersResourcePicker.tsx
     ├── index.ts
     └── testIds.ts
+
+41 directories, 107 files
 ```

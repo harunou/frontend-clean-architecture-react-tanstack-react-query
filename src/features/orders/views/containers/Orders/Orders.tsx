@@ -5,7 +5,7 @@ import { useController, usePresenter } from "./hooks";
 import { Order } from "../Order";
 import { OrdersResourcePicker } from "../OrdersResourcePicker";
 
-export const Orders: FC = memo(function Orders() {
+export const Orders: FC = memo(() => {
   const presenter = usePresenter();
   const controller = useController();
 
@@ -22,7 +22,7 @@ export const Orders: FC = memo(function Orders() {
         Total Items Quantity:{" "}
         <span data-testid={totalItemQuantityTestId}>{presenter.totalItemsQuantity}</span>
       </div>
-      <div>Status: {presenter.isLoading ? "loading..." : "pending"}</div>
+      <div>Status: {presenter.isLoading ? "loading..." : "idle"}</div>
       {presenter.orderIds.map((orderId) => (
         <Order key={orderId} orderId={orderId} />
       ))}

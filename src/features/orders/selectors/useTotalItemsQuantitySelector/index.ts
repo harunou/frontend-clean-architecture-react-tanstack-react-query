@@ -1,0 +1,1 @@
+export { useTotalItemsQuantitySelector } from "./useTotalItemsQuantitySelector";

@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useDeleteOrderUseCase } from "../../../../hooks/useCases";
+import { useDeleteOrderUseCase } from "../../../../useCases";
 import type { DeleteOrderController } from "../DeleteOrder.types";
 import type { OrderEntityId } from "../../../../types";
 import { usePresenter } from "./usePresenter";

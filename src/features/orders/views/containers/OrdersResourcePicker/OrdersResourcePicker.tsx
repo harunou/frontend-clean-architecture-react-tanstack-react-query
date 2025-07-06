@@ -1,7 +1,7 @@
 import { useCallback, type FC } from "react";
 import { useOrdersPresentationStore } from "../../../stores";
 import { isOrdersResource } from "../../../utils";
-import { useOrdersResourceSelector } from "../../../hooks/selectors";
+import { useOrdersResourceSelector } from "../../../selectors";
 
 export const OrdersResourcePicker: FC = () => {
   const resource = useOrdersResourceSelector();

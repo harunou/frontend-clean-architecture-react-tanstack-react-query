@@ -1,12 +1,11 @@
-import type { FC } from "react";
-import { memo } from "react";
+import { memo, type FC } from "react";
 import { deleteItemButtonTestId, orderItemTestId } from "../../testIds";
 import type { OrderItemProps } from "./OrderItem.types";
 import { useController, usePresenter } from "./hooks";
 
 export const OrderItem: FC<OrderItemProps> = memo((props) => {
   const presenter = usePresenter(props);
-  const controller = useController(props);
+  const { deleteOrderItemButtonClicked } = useController(props);
 
   if (!presenter.hasItem) {
     return null;
@@ -20,10 +19,7 @@ export const OrderItem: FC<OrderItemProps> = memo((props) => {
       }}
       data-testid={orderItemTestId}
     >
-      <button
-        data-testid={deleteItemButtonTestId}
-        onClick={controller.deleteOrderItemButtonClicked}
-      >
+      <button data-testid={deleteItemButtonTestId} onClick={deleteOrderItemButtonClicked}>
         Delete Item
       </button>
       <div>id: {presenter.itemId}</div>

@@ -1,5 +1,5 @@
 import { type FC, memo, useEffect } from "react";
-import { useOrdersResourceSelector } from "../../hooks/selectors";
+import { useOrdersResourceSelector } from "../../selectors";
 import { useConsoleRenderer } from "../hooks/useConsoleRenderer";
 
 declare global {

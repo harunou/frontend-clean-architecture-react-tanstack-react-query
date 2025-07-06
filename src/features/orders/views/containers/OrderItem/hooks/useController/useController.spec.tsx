@@ -1,14 +1,14 @@
 import { useController } from "./useController";
-import { afterEach, beforeEach, describe, expect, it, type Mocked, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { renderHook } from "@testing-library/react";
 import type { PropsWithChildren, FC } from "react";
-import { stubUseOrdersGateway } from "../../../../../utils/testing";
+import { type MockedOrdersGateway, mockUseOrdersGateway } from "../../../../../utils/testing";
 import { makeComponentFixture } from "../../../../../utils/testing/makeComponentFixture";
-import type { ItemEntityId, OrderEntityId, OrdersGateway } from "../../../../../types";
+import type { ItemEntityId, OrderEntityId } from "../../../../../types";
 
 interface LocalTestContext {
   Fixture: FC<PropsWithChildren<unknown>>;
-  gateway: Mocked<OrdersGateway>;
+  ordersGateway: MockedOrdersGateway;
   orderId: OrderEntityId;
   itemId: ItemEntityId;
 }
@@ -19,7 +19,7 @@ describe(`${useController.name}`, () => {
 
     const { Fixture } = makeComponentFixture();
     context.Fixture = Fixture;
-    context.gateway = stubUseOrdersGateway();
+    context.ordersGateway = mockUseOrdersGateway();
   });
 
   afterEach(() => {
@@ -28,7 +28,7 @@ describe(`${useController.name}`, () => {
   });
 
   it<LocalTestContext>("triggers order item deletion on the gateway", async (context) => {
-    context.gateway.deleteItem.mockResolvedValue();
+    context.ordersGateway.deleteItem.mockResolvedValue();
     const { result } = renderHook(
       () => useController({ itemId: context.itemId, orderId: context.orderId }),
       {
@@ -39,6 +39,6 @@ describe(`${useController.name}`, () => {
     result.current.deleteOrderItemButtonClicked();
     await vi.runAllTimersAsync();
 
-    expect(context.gateway.deleteItem).toHaveBeenCalledTimes(1);
+    expect(context.ordersGateway.deleteItem).toHaveBeenCalledTimes(1);
   });
 });

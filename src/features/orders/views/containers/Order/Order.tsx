@@ -1,5 +1,4 @@
-import type { FC } from "react";
-import { memo } from "react";
+import { memo, type FC } from "react";
 import type { OrderParams } from "./Order.types";
 import { OrderItem } from "../OrderItem";
 import { deleteOrderButtonTestId, orderTestId } from "../../testIds";

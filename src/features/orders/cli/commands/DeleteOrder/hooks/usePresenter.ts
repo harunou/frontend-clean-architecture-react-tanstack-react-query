@@ -1,9 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
-import { useGetOrdersOptions } from "../../../../gateways";
 import type { OrderEntityId, OrderEntity } from "../../../../types";
 import type { ViewModel } from "../DeleteOrder.types";
 import type { UseCaseResult } from "../../../../../../@types";
+import { ordersRepository } from "../../../../repositories";
 
 type PresenterParams = { orderId: OrderEntityId; result: UseCaseResult };
 
@@ -23,8 +22,7 @@ export const usePresenter = () => {
 };
 
 const useOrderIdsSelector = () => {
-  const options = useGetOrdersOptions();
-  const { refetch } = useQuery({ ...options });
+  const { refetch } = ordersRepository.useGetOrdersQueryState();
   return useCallback(async (): Promise<OrderEntityId[]> => {
     const { data: orders = [] } = await refetch();
     return orders.map((order: OrderEntity) => order.id);

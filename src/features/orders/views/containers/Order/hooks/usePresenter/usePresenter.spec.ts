@@ -1,21 +1,21 @@
 import { renderHook } from "@testing-library/react";
 import type { FC, PropsWithChildren } from "react";
-import { type Mocked, describe, beforeEach, vi, afterEach, it, expect } from "vitest";
-import type { OrdersGateway, OrderEntity } from "../../../../../types";
+import { describe, beforeEach, vi, afterEach, it, expect } from "vitest";
+import type { OrderEntity } from "../../../../../types";
 import {
   makeOrderEntities,
-  stubUseOrdersGateway,
+  mockUseOrdersGateway,
   resetOrderEntitiesFactories,
+  type MockedOrdersGateway,
 } from "../../../../../utils/testing";
 import { makeComponentFixture } from "../../../../../utils/testing/makeComponentFixture";
 import { usePresenter } from "./usePresenter";
 import { makeDeferred } from "../../../../../../../utils/testing";
-import { useMutation } from "@tanstack/react-query";
-import { useDeleteOrderOptions } from "../../../../../gateways/OrdersGateway";
+import { ordersRepository } from "../../../../../repositories";
 
 interface LocalTestContext {
   Fixture: FC<PropsWithChildren<unknown>>;
-  gateway: Mocked<OrdersGateway>;
+  ordersGateway: MockedOrdersGateway;
   orders: OrderEntity[];
 }
 
@@ -26,7 +26,7 @@ describe(`${usePresenter.name}`, () => {
 
     const { Fixture } = makeComponentFixture();
     context.Fixture = Fixture;
-    context.gateway = stubUseOrdersGateway();
+    context.ordersGateway = mockUseOrdersGateway();
     context.orders = makeOrderEntities();
   });
 
@@ -38,14 +38,14 @@ describe(`${usePresenter.name}`, () => {
   it<LocalTestContext>("disables delete order button once deletion process in progress", async (context) => {
     const order0 = context.orders.at(1)!;
     const { promise } = makeDeferred<void>();
-    context.gateway.getOrders.mockResolvedValue(context.orders);
-    context.gateway.deleteOrder.mockReturnValue(promise);
+    context.ordersGateway.getOrders.mockResolvedValue(context.orders);
+    context.ordersGateway.deleteOrder.mockReturnValue(promise);
 
     const { result: resultPresenter } = renderHook(() => usePresenter({ orderId: order0.id }), {
       wrapper: context.Fixture,
     });
     const { result: resultDeleteOrder } = renderHook(
-      () => useMutation({ ...useDeleteOrderOptions("local") }),
+      () => ordersRepository.useDeleteOrder("local"),
       {
         wrapper: context.Fixture,
       },

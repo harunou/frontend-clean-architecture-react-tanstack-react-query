@@ -14,7 +14,7 @@
     "test:deps": "depcruise --config ./dependency-cruiser.config.cjs ./src",
     "test:format": "npm run format:check",
     "test:lint": "eslint --format=codeframe --max-warnings=0 ./",
-    "deps:graph": "depcruise --config ./dependency-cruiser.config.cjs ./src --include-only '^src' --exclude '(.factory|test(s?)|spec(s?))' --collapse 5  --output-type dot | dot -T svg > ./dependency-graph.svg",
+    "deps:graph": "depcruise --config ./dependency-cruiser.config.cjs ./src --include-only '^src' --exclude '(.factory|test(s?)|spec(s?)|types|utils)' --collapse 5  --output-type dot | dot -T svg > ./dependency-graph.svg",
     "vitest:watch": "vitest watch --test-timeout 0",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
@@ -22,8 +22,8 @@
   "dependencies": {
     "@esfx/async-deferred": "^1.0.0",
     "@eslint/js": "^9.17.0",
-    "@tanstack/react-query": "^5.64.2",
-    "@tanstack/react-query-devtools": "^5.76.1",
+    "@tanstack/react-query": "^5.81.5",
+    "@tanstack/react-query-devtools": "^5.81.5",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",

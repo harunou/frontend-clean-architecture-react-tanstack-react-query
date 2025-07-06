@@ -1,7 +1,6 @@
-import { useMemo } from "react";
 import type { Presenter } from "../OrderItem.types";
 import type { ItemEntityId, OrderEntityId } from "../../../../types";
-import { useIsLastItemIdSelector, useItemByIdSelector } from "../../../../hooks/selectors";
+import { useIsLastItemIdSelector, useItemByIdSelector } from "../../../../selectors";
 
 export const usePresenter = (params: {
   orderId: OrderEntityId;
@@ -10,18 +9,16 @@ export const usePresenter = (params: {
   const item = useItemByIdSelector(params.orderId, params.itemId);
   const isLastItem = useIsLastItemIdSelector(params.orderId, params.itemId);
 
-  return useMemo(() => {
-    if (!item) {
-      return {
-        hasItem: false,
-      };
-    }
+  if (!item) {
     return {
-      hasItem: true,
-      itemId: item.id,
-      productId: item.productId,
-      productQuantity: item.quantity,
-      isLastItem,
+      hasItem: false,
     };
-  }, [isLastItem, item]);
+  }
+  return {
+    hasItem: true,
+    itemId: item.id,
+    productId: item.productId,
+    productQuantity: item.quantity,
+    isLastItem,
+  };
 };
