@@ -8,11 +8,6 @@ have to lead to unnecessary complexity or over-engineering. Instead, it can
 simplify the development process while providing the full benefits of this
 architectural style.
 
-For more context, you can read these articles:
-
-- [Frontend Clean Architecture: Practical Insights and Pitfalls](https://dev.to/harunou/clean-architecture-practical-insights-and-pitfalls-1mdj)
-- [Clean Architecture for Frontend Applications](https://dev.to/harunou/clean-architecture-in-frontend-applications-overview-4o89)
-
 ## Clean Architecture Implementation
 
 A basic implementation of Clean Architecture for a typical frontend application
@@ -22,6 +17,13 @@ with a store and API integration is as follows:
 
 This implementation is framework-agnostic and can be used with any modern
 reactive frontend framework, like React, Vue, Svelte, or Angular.
+
+For more context, you can read these articles:
+
+- [Frontend Clean Architecture: Practical Insights and Pitfalls](https://dev.to/harunou/clean-architecture-practical-insights-and-pitfalls-1mdj)
+- [Clean Architecture for Frontend Applications](https://dev.to/harunou/clean-architecture-in-frontend-applications-overview-4o89)
+
+### Implementation with TanStack React Query
 
 This application, however, uses TanStack React Query for server state management
 and synchronization states, which fits naturally into a repository unit.
