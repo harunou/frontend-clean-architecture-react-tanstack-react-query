@@ -7,10 +7,10 @@ import {
   useMutationState,
 } from "@tanstack/react-query";
 import { ordersRepositoryKeys } from "./ordersRepositoryKeys";
-import { isOrderItemMutationVariables } from "./ordersRepository.utils";
 import { OrdersService } from "./OrdersService";
 import type { OrdersResource } from "../../types";
 import { useGatewayResource } from "./hooks";
+import { isOrderItemMutationVariables } from "./utils";
 
 const DEFAULT_ORDERS: OrderEntity[] = [];
 
