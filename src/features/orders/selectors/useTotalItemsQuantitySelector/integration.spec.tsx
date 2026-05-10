@@ -15,14 +15,14 @@ import {
   mockUseOrdersGateway,
 } from "../../utils/testing";
 import { makeComponentFixture } from "../../utils/testing/makeComponentFixture";
-import { InMemoryOrdersGateway } from "../../repositories/ordersRepository/OrdersService";
+import { InMemoryOrdersService } from "../../repositories/ordersRepository/OrdersService/InMemoryOrdersService";
 
 interface LocalTestContext {
   Fixture: FC<PropsWithChildren<unknown>>;
   user: UserEvent;
   orders: OrderEntity[];
   mockedOrdersGateway: MockedOrdersGateway;
-  inMemoryOrdersGateway: InMemoryOrdersGateway;
+  inMemoryOrdersGateway: InMemoryOrdersService;
 }
 
 interface Output {
@@ -47,7 +47,7 @@ describe(`${useTotalItemsQuantitySelector.name} Integration Test for Order delet
     context.user = user;
     context.orders = makeOrderEntities();
     context.mockedOrdersGateway = mockUseOrdersGateway();
-    context.inMemoryOrdersGateway = InMemoryOrdersGateway.make();
+    context.inMemoryOrdersGateway = InMemoryOrdersService.make();
 
     const Component: FC<{ orderId: OrderEntityId }> = memo((props) => {
       const quantity = useTotalItemsQuantitySelector();
@@ -143,7 +143,7 @@ describe(`${useTotalItemsQuantitySelector.name} Integration Test for Order delet
     context.user = user;
     context.orders = makeOrderEntities();
     context.mockedOrdersGateway = mockUseOrdersGateway();
-    context.inMemoryOrdersGateway = InMemoryOrdersGateway.make();
+    context.inMemoryOrdersGateway = InMemoryOrdersService.make();
 
     const Component: FC<{ orderId: OrderEntityId; itemId: ItemEntityId }> = memo((props) => {
       const quantity = useTotalItemsQuantitySelector();

@@ -1,6 +1,6 @@
 import { type Mocked, vi } from "vitest";
-import * as useOrdersGatewayModule from "../../repositories/ordersRepository/hooks/useOrdersGateway";
-import type { OrdersGateway } from "../../repositories/ordersRepository/OrdersService/OrdersGateway.types";
+import type { OrdersGateway } from "../../repositories/ordersRepository/ordersRepository.types";
+import { OrdersService } from "../../repositories/ordersRepository/OrdersService";
 
 export type MockedOrdersGateway = Mocked<OrdersGateway>;
 
@@ -20,15 +20,15 @@ export const mockUseOrdersGateway = (): MockedOrdersGateway => {
     deleteItem: vi.fn(makeNoMockDefined("deleteItem")),
   };
 
-  vi.spyOn(useOrdersGatewayModule, "useOrdersGateway").mockReturnValue(mock);
+  vi.spyOn(OrdersService, "make").mockReturnValue(mock);
 
   return mock;
 };
 
 export const restoreMockedUseOrdersGateway = (): void => {
-  if (!vi.isMockFunction(useOrdersGatewayModule.useOrdersGateway)) {
-    console.warn("useOrdersGateway is not mocked, cannot restore");
+  if (!vi.isMockFunction(OrdersService.make)) {
+    console.warn("OrdersService.make is not mocked, cannot restore");
     return;
   }
-  vi.mocked(useOrdersGatewayModule.useOrdersGateway).mockRestore();
+  vi.mocked(OrdersService.make).mockRestore();
 };

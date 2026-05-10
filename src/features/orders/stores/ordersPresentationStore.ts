@@ -1,5 +1,6 @@
 import { createStore } from "zustand/vanilla";
-import type { OrdersPresentationEntity, OrdersResource } from "../types";
+import type { OrdersResource } from "../types";
+import type { OrdersPresentationEntity } from "./ordersPresentationStore.types";
 
 export interface OrdersPresentationStore extends OrdersPresentationEntity {
   setOrdersResource: (resource: OrdersResource) => void;

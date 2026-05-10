@@ -14,7 +14,7 @@ import { useGatewayResource } from "./hooks";
 
 const DEFAULT_ORDERS: OrderEntity[] = [];
 
-const useGetOrders = (forceResource: OrdersResource) => {
+const useGetOrders = (forceResource?: OrdersResource) => {
   const resource = useGatewayResource(forceResource);
   const gateway = OrdersService.make(resource);
   const getOrdersKey = ordersRepositoryKeys.makeGetOrdersKey(resource);
@@ -30,7 +30,7 @@ const useGetOrders = (forceResource: OrdersResource) => {
   return { data: data ?? DEFAULT_ORDERS };
 };
 
-const useGetOrdersQueryState = (forceResource: OrdersResource) => {
+const useGetOrdersQueryState = (forceResource?: OrdersResource) => {
   const resource = useGatewayResource(forceResource);
   const gateway = OrdersService.make(resource);
   const getOrdersKey = ordersRepositoryKeys.makeGetOrdersKey(resource);
@@ -44,7 +44,7 @@ const useGetOrdersQueryState = (forceResource: OrdersResource) => {
   });
 };
 
-const useDeleteOrder = (forceResource: OrdersResource) => {
+const useDeleteOrder = (forceResource?: OrdersResource) => {
   const queryClient = useQueryClient();
   const resource = useGatewayResource(forceResource);
   const gateway = OrdersService.make(resource);
@@ -62,7 +62,7 @@ const useDeleteOrder = (forceResource: OrdersResource) => {
   });
 };
 
-const useDeleteOrderItem = (forceResource: OrdersResource) => {
+const useDeleteOrderItem = (forceResource?: OrdersResource) => {
   const queryClient = useQueryClient();
   const resource = useGatewayResource(forceResource);
   const gateway = OrdersService.make(resource);
