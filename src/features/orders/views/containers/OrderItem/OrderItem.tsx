@@ -1,5 +1,5 @@
 import { memo, type FC } from "react";
-import { deleteItemButtonTestId, orderItemTestId } from "../../testIds";
+import { deleteItemButtonTestId, orderItemTestId } from "../../../testIds";
 import type { OrderItemProps } from "./OrderItem.types";
 import { useController, usePresenter } from "./hooks";
 

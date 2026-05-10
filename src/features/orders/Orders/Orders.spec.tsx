@@ -2,12 +2,12 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, vi, expect, beforeEach } from "vitest";
 import { Orders } from "./Orders";
 import { useController, usePresenter } from "./hooks";
-import { ordersTestId, totalItemQuantityTestId } from "../../testIds";
-import type { OrderEntityId } from "../../../repositories/ordersRepository";
+import { ordersTestId, totalItemQuantityTestId } from "../testIds";
+import type { OrderEntityId } from "../repositories/ordersRepository";
 
 vi.mock("./hooks/useController");
 vi.mock("./hooks/usePresenter");
-vi.mock("../Order/Order", () => ({
+vi.mock("../views/containers/Order/Order", () => ({
   Order: (props: { orderId: OrderEntityId }) => (
     <div data-testid={`order-${props.orderId}`}>Order {props.orderId}</div>
   ),

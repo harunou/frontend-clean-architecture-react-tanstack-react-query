@@ -1,9 +1,9 @@
 import type { FC } from "react";
 import { memo, useEffect } from "react";
-import { ordersTestId, totalItemQuantityTestId } from "../../testIds";
+import { ordersTestId, totalItemQuantityTestId } from "../testIds";
 import { useController, usePresenter } from "./hooks";
-import { Order } from "../Order";
-import { OrdersResourcePicker } from "../OrdersResourcePicker";
+import { Order } from "../views/containers/Order";
+import { OrdersResourcePicker } from "../views/containers/OrdersResourcePicker";
 
 export const Orders: FC = memo(() => {
   const presenter = usePresenter();

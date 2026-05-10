@@ -3,7 +3,7 @@ import {
   useIsOrdersProcessingSelector,
   useOrderIdsSelector,
   useTotalItemsQuantitySelector,
-} from "../../../../selectors";
+} from "../../selectors";
 
 export const usePresenter = (): Presenter => {
   const isLoading = useIsOrdersProcessingSelector();

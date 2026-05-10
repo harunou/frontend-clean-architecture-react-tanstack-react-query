@@ -2,17 +2,20 @@ import type { FC, PropsWithChildren } from "react";
 import { describe, beforeEach, vi, afterEach, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import type { UserEvent } from "@testing-library/user-event";
-import type { OrderEntity } from "../../../repositories/ordersRepository";
-import type { OrdersResource } from "../../../types";
-import { makeOrderEntities, resetOrderEntitiesFactories } from "../../../utils/testing";
+import type { OrderEntity } from "../repositories/ordersRepository";
+import type { OrdersResource } from "../types";
+import { makeOrderEntities, resetOrderEntitiesFactories } from "../utils/testing";
 import {
   makeOrdersServiceMock,
   type MockedOrdersService,
-} from "../../../repositories/ordersRepository/utils/testing";
-import { makeComponentFixture } from "../../../utils/testing/makeComponentFixture";
-import { deleteItemButtonTestId, totalItemQuantityTestId } from "../../testIds";
+} from "../repositories/ordersRepository/utils/testing";
+import { makeComponentFixture } from "../utils/testing/makeComponentFixture";
+import {
+  deleteItemButtonTestId,
+  totalItemQuantityTestId,
+  deleteOrderButtonTestId,
+} from "../testIds";
 import { Orders } from "./Orders";
-import { deleteOrderButtonTestId } from "../../testIds";
 
 describe(`${Orders.displayName} Integration Test`, () => {
   interface IntegrationTestContext {
