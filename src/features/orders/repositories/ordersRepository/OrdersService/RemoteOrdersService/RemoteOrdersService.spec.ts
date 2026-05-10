@@ -4,7 +4,7 @@ import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import { makeItemEntityId, makeOrderEntityId } from "../../../../utils";
 import type { OrderEntity } from "../../ordersRepository.types";
-import { orderDtoFactory, OrdersApi, ordersApiUrl } from "../../../../externalResources/OrdersApi";
+import { orderDtoFactory, OrdersApi, ordersApiUrl } from "../../../../api/OrdersApi";
 
 const server = setupServer();
 

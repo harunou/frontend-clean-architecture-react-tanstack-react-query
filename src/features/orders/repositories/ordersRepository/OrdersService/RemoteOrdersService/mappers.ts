@@ -1,4 +1,4 @@
-import type { OrderDto, OrderItemDto } from "../../../../externalResources";
+import type { OrderDto, OrderItemDto } from "../../../../api";
 import type { OrderEntity, ItemEntity } from "../../ordersRepository.types";
 import { makeOrderEntityId, makeItemEntityId } from "../../../../utils";
 

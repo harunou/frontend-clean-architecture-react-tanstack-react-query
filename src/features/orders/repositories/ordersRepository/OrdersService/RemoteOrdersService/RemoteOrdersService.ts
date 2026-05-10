@@ -1,4 +1,4 @@
-import { OrdersApi, type OrderDto } from "../../../../externalResources";
+import { OrdersApi, type OrderDto } from "../../../../api";
 import type {
   ItemEntityId,
   OrderEntity,
