@@ -13,7 +13,7 @@ architectural style.
 A basic implementation of Clean Architecture for a typical frontend application
 with a store and API integration is as follows:
 
-![fe-ca-basic-diagram](docs/fe-ca-diagram.svg)
+![fe-ca-basic-diagram](docs/ca-fe-reactive-framework-extended.drawio.svg)
 
 This implementation is framework-agnostic and can be used with any modern
 reactive frontend framework, like React, Vue, Svelte, or Angular.
@@ -31,7 +31,7 @@ and synchronization states, which fits naturally into a repository unit.
 The following diagram illustrates an extended Clean Architecture implementation
 that includes a repository unit, which this application follows.
 
-![fe-ca-diagram-repository](docs/ca-fe-diagram-repository.svg)
+![fe-ca-diagram-repository](docs/ca-fe-reactive-framework-extended-repository.drawio.svg)
 
 - The **Repository unit** is responsible for managing server state, handling
   synchronization, and providing a consistent data interface to the rest of the
