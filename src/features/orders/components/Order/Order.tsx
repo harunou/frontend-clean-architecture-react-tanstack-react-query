@@ -1,7 +1,7 @@
 import { memo, type FC } from "react";
 import type { OrderParams } from "./Order.types";
 import { OrderItem } from "../OrderItem";
-import { deleteOrderButtonTestId, orderTestId } from "../../../testIds";
+import { deleteOrderButtonTestId, orderTestId } from "../../testIds";
 import { useController, usePresenter } from "./hooks";
 
 export const Order: FC<OrderParams> = memo((props) => {

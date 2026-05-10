@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import type { Controller } from "../../OrderItem.types";
-import type { ItemEntityId, OrderEntityId } from "../../../../../repositories/ordersRepository";
-import { ordersRepository } from "../../../../../repositories";
+import type { ItemEntityId, OrderEntityId } from "../../../../repositories/ordersRepository";
+import { ordersRepository } from "../../../../repositories";
 
 export const useController = (params: {
   orderId: OrderEntityId;

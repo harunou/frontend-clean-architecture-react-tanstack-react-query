@@ -7,7 +7,7 @@ import type { OrderEntityId } from "../repositories/ordersRepository";
 
 vi.mock("./hooks/useController");
 vi.mock("./hooks/usePresenter");
-vi.mock("../views/containers/Order/Order", () => ({
+vi.mock("../components/Order/Order", () => ({
   Order: (props: { orderId: OrderEntityId }) => (
     <div data-testid={`order-${props.orderId}`}>Order {props.orderId}</div>
   ),

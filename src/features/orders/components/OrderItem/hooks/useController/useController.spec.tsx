@@ -5,9 +5,9 @@ import type { PropsWithChildren, FC } from "react";
 import {
   makeOrdersServiceMock,
   type MockedOrdersService,
-} from "../../../../../repositories/ordersRepository/utils/testing";
-import { makeComponentFixture } from "../../../../../utils/testing/makeComponentFixture";
-import type { ItemEntityId, OrderEntityId } from "../../../../../repositories/ordersRepository";
+} from "../../../../repositories/ordersRepository/utils/testing";
+import { makeComponentFixture } from "../../../../utils/testing/makeComponentFixture";
+import type { ItemEntityId, OrderEntityId } from "../../../../repositories/ordersRepository";
 
 interface LocalTestContext {
   Fixture: FC<PropsWithChildren<unknown>>;
