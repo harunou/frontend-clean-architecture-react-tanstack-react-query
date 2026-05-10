@@ -43,6 +43,6 @@ describe(`${useController.name}`, () => {
     result.current.deleteOrderItemButtonClicked();
     await vi.runAllTimersAsync();
 
-    expect(ordersServiceMock.mock.deleteItem).toHaveBeenCalledTimes(1);
+    expect(context.ordersServiceMock.deleteItem).toHaveBeenCalledTimes(1);
   });
 });
