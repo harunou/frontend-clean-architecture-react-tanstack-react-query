@@ -11,6 +11,7 @@ interface PresenterWithItem {
   productId: string;
   productQuantity: number;
   isLastItem: boolean;
+  isDeleteItemButtonDisabled: boolean;
 }
 interface PresenterWithoutItem {
   hasItem: false;

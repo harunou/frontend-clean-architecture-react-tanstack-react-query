@@ -1,4 +1,5 @@
 export * from "./useIsOrdersProcessingSelector";
+export * from "./useIsItemProcessingSelector";
 export * from "./useTotalItemsQuantitySelector";
 export * from "./useIsLastItemIdSelector";
 export * from "./useIsLastOrderIdSelector";

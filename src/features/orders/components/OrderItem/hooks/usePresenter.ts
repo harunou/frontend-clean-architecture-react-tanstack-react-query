@@ -1,6 +1,10 @@
 import type { Presenter } from "../OrderItem.types";
 import type { ItemEntityId, OrderEntityId } from "../../../repositories/ordersRepository";
-import { useIsLastItemIdSelector, useItemByIdSelector } from "../../../selectors";
+import {
+  useIsItemProcessingSelector,
+  useIsLastItemIdSelector,
+  useItemByIdSelector,
+} from "../../../selectors";
 
 export const usePresenter = (params: {
   orderId: OrderEntityId;
@@ -8,6 +12,7 @@ export const usePresenter = (params: {
 }): Presenter => {
   const item = useItemByIdSelector(params.orderId, params.itemId);
   const isLastItem = useIsLastItemIdSelector(params.orderId, params.itemId);
+  const isItemProcessing = useIsItemProcessingSelector(params.orderId, params.itemId);
 
   if (!item) {
     return {
@@ -20,5 +25,6 @@ export const usePresenter = (params: {
     productId: item.productId,
     productQuantity: item.quantity,
     isLastItem,
+    isDeleteItemButtonDisabled: isItemProcessing,
   };
 };

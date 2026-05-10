@@ -19,7 +19,11 @@ export const OrderItem: FC<OrderItemProps> = memo((props) => {
       }}
       data-testid={orderItemTestId}
     >
-      <button data-testid={deleteItemButtonTestId} onClick={deleteOrderItemButtonClicked}>
+      <button
+        data-testid={deleteItemButtonTestId}
+        disabled={presenter.isDeleteItemButtonDisabled}
+        onClick={deleteOrderItemButtonClicked}
+      >
         Delete Item
       </button>
       <div>id: {presenter.itemId}</div>

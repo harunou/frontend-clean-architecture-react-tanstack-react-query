@@ -23,7 +23,7 @@ export class InMemoryOrdersService implements OrdersGateway {
   }
 
   async getOrders(): Promise<OrderEntity[]> {
-    await sleep(500);
+    await sleep(1000);
 
     return Array.from(this.orders.values());
   }
@@ -38,7 +38,7 @@ export class InMemoryOrdersService implements OrdersGateway {
   }
 
   async deleteItem(orderId: OrderEntityId, itemId: string): Promise<void> {
-    await sleep(400);
+    await sleep(2000);
 
     const order = this.orders.get(orderId);
 
