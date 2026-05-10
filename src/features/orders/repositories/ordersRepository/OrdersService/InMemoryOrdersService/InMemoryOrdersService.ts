@@ -1,9 +1,10 @@
 import { sleep } from "../../../../../../utils";
 import type { OrderEntity, OrderEntityId, OrdersGateway } from "../../ordersRepository.types";
+import { makeMockOrderEntities } from "./makeMockOrderEntities";
 
 export class InMemoryOrdersService implements OrdersGateway {
   static instance: InMemoryOrdersService | null = null;
-  static make(orders: OrderEntity[] = []): InMemoryOrdersService {
+  static make(orders: OrderEntity[] = makeMockOrderEntities()): InMemoryOrdersService {
     if (InMemoryOrdersService.instance === null) {
       InMemoryOrdersService.instance = new InMemoryOrdersService(orders);
     }

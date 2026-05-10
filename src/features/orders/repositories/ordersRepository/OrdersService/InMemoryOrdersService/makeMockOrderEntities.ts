@@ -4,8 +4,8 @@ import type {
   OrderEntityId,
   ItemEntity,
   ItemEntityId,
-} from "../ordersRepository.types";
-import { randomFrom1To100 } from "../../../../../utils/testing";
+} from "../../ordersRepository.types";
+import { randomFrom1To100 } from "../../../../../../utils/testing";
 
 export const itemEntityFactory = factoryT<ItemEntity>({
   id: (ctx) => `${ctx.index}` as ItemEntityId,
@@ -21,7 +21,7 @@ export const orderEntityFactory = factoryT<OrderEntity>({
   itemEntities: [],
 });
 
-export const makeOrderEntities = (
+export const makeMockOrderEntities = (
   ordersCount: number = 5,
   itemsCount: number = 7,
 ): OrderEntity[] => {
