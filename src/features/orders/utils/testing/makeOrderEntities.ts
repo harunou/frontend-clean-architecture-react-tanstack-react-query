@@ -1,4 +1,4 @@
-import type { OrderEntity } from "../../types";
+import type { OrderEntity } from "../../repositories/ordersRepository";
 import { itemEntityFactory } from "./itemEntityFactory";
 import { orderEntityFactory } from "./orderEntityFactory";
 

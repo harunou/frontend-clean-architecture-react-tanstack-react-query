@@ -1,5 +1,5 @@
 import { ordersRepository } from "../../repositories";
-import type { OrderEntity } from "../../types";
+import type { OrderEntity } from "../../repositories/ordersRepository";
 
 export const useTotalItemsQuantitySelector = (): number => {
   const { data } = ordersRepository.useGetOrders();

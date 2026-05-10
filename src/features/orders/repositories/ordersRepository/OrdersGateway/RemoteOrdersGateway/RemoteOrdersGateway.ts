@@ -1,5 +1,5 @@
 import { OrdersApi, type OrderDto } from "../../../../externalResources";
-import type { ItemEntityId, OrderEntity, OrderEntityId } from "../../../../types";
+import type { ItemEntityId, OrderEntity, OrderEntityId } from "../../ordersRepository.types";
 import type { OrdersGateway } from "../OrdersGateway.types";
 import { toOrderEntity } from "./mappers";
 

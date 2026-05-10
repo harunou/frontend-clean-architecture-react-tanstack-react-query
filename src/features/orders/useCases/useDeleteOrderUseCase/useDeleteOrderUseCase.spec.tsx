@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { useDeleteOrderUseCase } from "./useDeleteOrderUseCase";
 import type { UserEvent } from "@testing-library/user-event";
 import type { FC, PropsWithChildren } from "react";
-import type { OrderEntity, OrderEntityId } from "../../types";
+import type { OrderEntity, OrderEntityId } from "../../repositories/ordersRepository";
 import {
   makeOrderEntities,
   type MockedOrdersGateway,

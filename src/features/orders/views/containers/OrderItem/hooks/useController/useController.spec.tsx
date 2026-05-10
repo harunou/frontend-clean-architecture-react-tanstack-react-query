@@ -4,7 +4,7 @@ import { renderHook } from "@testing-library/react";
 import type { PropsWithChildren, FC } from "react";
 import { type MockedOrdersGateway, mockUseOrdersGateway } from "../../../../../utils/testing";
 import { makeComponentFixture } from "../../../../../utils/testing/makeComponentFixture";
-import type { ItemEntityId, OrderEntityId } from "../../../../../types";
+import type { ItemEntityId, OrderEntityId } from "../../../../../repositories/ordersRepository";
 
 interface LocalTestContext {
   Fixture: FC<PropsWithChildren<unknown>>;

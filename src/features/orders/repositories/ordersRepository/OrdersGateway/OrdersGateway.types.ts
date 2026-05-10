@@ -1,4 +1,4 @@
-import type { ItemEntityId, OrderEntity, OrderEntityId } from "../../../types";
+import type { ItemEntityId, OrderEntity, OrderEntityId } from "../ordersRepository.types";
 
 export interface OrdersGateway {
   getOrders(): Promise<OrderEntity[]>;

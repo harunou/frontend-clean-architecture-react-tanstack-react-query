@@ -3,7 +3,7 @@ import { useTotalItemsQuantitySelector } from "./useTotalItemsQuantitySelector";
 import { renderHook } from "@testing-library/react";
 import type { FC, PropsWithChildren } from "react";
 import type { UserEvent } from "@testing-library/user-event";
-import type { OrderEntity } from "../../types";
+import type { OrderEntity } from "../../repositories/ordersRepository";
 import {
   resetOrderEntitiesFactories,
   mockUseOrdersGateway,

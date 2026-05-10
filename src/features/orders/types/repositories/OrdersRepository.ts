@@ -1,5 +1,5 @@
 import type { MutationState, UseMutationResult, UseQueryResult } from "@tanstack/react-query";
-import type { OrderEntity, OrderEntityId, ItemEntityId } from "../entities";
+import type { OrderEntity, OrderEntityId, ItemEntityId } from "../../repositories/ordersRepository/ordersRepository.types";
 import type { OrdersResource } from "../OrdersResource";
 
 export interface OrdersRepository {

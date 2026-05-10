@@ -1,4 +1,4 @@
-import type { OrderEntityId, ItemEntityId } from "../../../types";
+import type { OrderEntityId, ItemEntityId } from "../../../repositories/ordersRepository";
 
 export interface OrderItemProps {
   orderId: OrderEntityId;

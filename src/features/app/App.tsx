@@ -5,8 +5,8 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <Orders />
         <OrdersCli />
+        <Orders />
       </header>
     </div>
   );

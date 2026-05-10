@@ -1,5 +1,5 @@
 import type { OrderDto, OrderItemDto } from "../../../../externalResources";
-import type { OrderEntity, ItemEntity } from "../../../../types";
+import type { OrderEntity, ItemEntity } from "../../ordersRepository.types";
 import { makeOrderEntityId, makeItemEntityId } from "../../../../utils";
 
 export function toOrderEntity(dto: OrderDto): OrderEntity {

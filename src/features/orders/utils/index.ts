@@ -1,4 +1,5 @@
-import type { ItemEntityId, OrderEntityId, OrdersResource } from "../types";
+import type { ItemEntityId, OrderEntityId } from "../repositories/ordersRepository";
+import type { OrdersResource } from "../types";
 
 export const makeItemEntityId = (id: string): ItemEntityId => {
   return id as ItemEntityId;

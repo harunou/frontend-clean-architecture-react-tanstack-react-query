@@ -2,7 +2,7 @@ import type { UserEvent } from "@testing-library/user-event";
 import type { FC, PropsWithChildren } from "react";
 import { describe, beforeEach, vi, afterEach, it, expect } from "vitest";
 import { makeDeferred, output } from "../../../../utils/testing";
-import type { OrderEntity } from "../../types";
+import type { OrderEntity } from "../../repositories/ordersRepository";
 import { makeOrderEntityId, makeItemEntityId } from "../../utils";
 import { type MockedOrdersGateway, mockUseOrdersGateway } from "../../utils/testing";
 import { makeComponentFixture } from "../../utils/testing/makeComponentFixture";

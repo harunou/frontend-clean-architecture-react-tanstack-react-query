@@ -1,5 +1,5 @@
 import { sleep } from "../../../../../../utils";
-import type { OrderEntity, OrderEntityId } from "../../../../types";
+import type { OrderEntity, OrderEntityId } from "../../ordersRepository.types";
 import type { OrdersGateway } from "../OrdersGateway.types";
 
 export class InMemoryOrdersGateway implements OrdersGateway {

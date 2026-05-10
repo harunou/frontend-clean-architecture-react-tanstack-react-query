@@ -1,4 +1,5 @@
-import type { OrderEntityId, ItemEntityId, OrdersRepository, OrderEntity } from "../../types";
+import type { OrderEntityId, ItemEntityId, OrderEntity } from "./ordersRepository.types";
+import type { OrdersRepository } from "../../types";
 import {
   useQuery,
   useMutation,

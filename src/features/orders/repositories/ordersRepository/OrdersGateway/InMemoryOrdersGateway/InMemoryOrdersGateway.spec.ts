@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryOrdersGateway } from "./InMemoryOrdersGateway";
-import type { OrderEntity } from "../../../../types";
+import type { OrderEntity } from "../../ordersRepository.types";
 import {
   itemEntityFactory,
   makeOrderEntities,

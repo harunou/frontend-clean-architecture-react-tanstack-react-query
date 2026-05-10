@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react";
 import type { FC, PropsWithChildren } from "react";
 import { describe, beforeEach, vi, afterEach, it, expect } from "vitest";
-import type { OrderEntity } from "../../../../../types";
+import type { OrderEntity } from "../../../../../repositories/ordersRepository";
 import {
   makeOrderEntities,
   mockUseOrdersGateway,

@@ -1,4 +1,4 @@
-import type { OrderEntity, OrderEntityId } from "../../types";
+import type { OrderEntity, OrderEntityId } from "../../repositories/ordersRepository";
 import { ordersRepository } from "../../repositories";
 
 export const useOrderByIdSelector = (orderId: OrderEntityId): OrderEntity | undefined => {

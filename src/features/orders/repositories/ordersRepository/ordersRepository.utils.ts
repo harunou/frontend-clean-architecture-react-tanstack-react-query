@@ -1,4 +1,4 @@
-import type { ItemEntityId, OrderEntityId } from "../../types";
+import type { ItemEntityId, OrderEntityId } from "./ordersRepository.types";
 
 export function isOrderItemMutationVariables(
   variables: unknown,

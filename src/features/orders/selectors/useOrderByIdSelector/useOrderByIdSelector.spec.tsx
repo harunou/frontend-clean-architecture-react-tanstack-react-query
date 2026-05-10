@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from "react";
 import { describe, beforeEach, vi, afterEach, it, expect, assert } from "vitest";
 import { makeDeferred, output } from "../../../../utils/testing";
-import type { OrderEntity, OrderEntityId } from "../../types";
+import type { OrderEntity, OrderEntityId } from "../../repositories/ordersRepository";
 import { makeOrderEntityId } from "../../utils";
 import {
   type MockedOrdersGateway,

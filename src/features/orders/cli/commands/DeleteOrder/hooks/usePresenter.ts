@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import type { OrderEntityId, OrderEntity } from "../../../../types";
+import type { OrderEntityId, OrderEntity } from "../../../../repositories/ordersRepository";
 import type { ViewModel } from "../DeleteOrder.types";
 import type { UseCaseResult } from "../../../../../../@types";
 import { ordersRepository } from "../../../../repositories";

@@ -1,4 +1,4 @@
-import type { OrderEntityId } from "../../../types";
+import type { OrderEntityId } from "../../../repositories/ordersRepository";
 
 export interface Presenter {
   orderIds: OrderEntityId[];

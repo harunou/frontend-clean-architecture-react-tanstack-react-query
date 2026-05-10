@@ -1,4 +1,4 @@
-import type { ItemEntity, ItemEntityId, OrderEntityId } from "../types";
+import type { ItemEntity, ItemEntityId, OrderEntityId } from "../repositories/ordersRepository";
 import { ordersRepository } from "../repositories";
 
 export const useItemByIdSelector = (

@@ -1,5 +1,5 @@
 import type { Presenter } from "../OrderItem.types";
-import type { ItemEntityId, OrderEntityId } from "../../../../types";
+import type { ItemEntityId, OrderEntityId } from "../../../../repositories/ordersRepository";
 import { useIsLastItemIdSelector, useItemByIdSelector } from "../../../../selectors";
 
 export const usePresenter = (params: {

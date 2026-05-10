@@ -5,7 +5,7 @@ import { memo, type FC, type PropsWithChildren } from "react";
 import type { UserEvent } from "@testing-library/user-event";
 import { output } from "../../../../utils/testing";
 import { ordersRepository } from "../../repositories";
-import type { OrderEntity, OrderEntityId, ItemEntityId } from "../../types";
+import type { OrderEntity, OrderEntityId, ItemEntityId } from "../../repositories/ordersRepository";
 import { makeItemEntityId, makeOrderEntityId } from "../../utils";
 import {
   resetOrderEntitiesFactories,
