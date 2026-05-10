@@ -1,13 +1,9 @@
 import type { FC, PropsWithChildren } from "react";
 import { describe, beforeEach, vi, afterEach, it, expect } from "vitest";
 import { output } from "../../../../utils/testing";
-import type { OrderEntity, OrderEntityId } from "../../repositories/ordersRepository";
+import type { OrderEntity, OrderEntityId } from "../../repositories";
 import type { OrdersResource } from "../../types";
 import { makeOrderEntities, resetOrderEntitiesFactories } from "../../utils/testing";
-import {
-  makeOrdersServiceMock,
-  type MockedOrdersService,
-} from "../../repositories/ordersRepository/utils/testing";
 import { makeComponentFixture } from "../../utils/testing/makeComponentFixture";
 import { render, screen } from "@testing-library/react";
 import type { UserEvent } from "@testing-library/user-event";
@@ -15,6 +11,10 @@ import { useDeleteOrderUseCase } from "../../useCases";
 import { ordersRepository } from "../../repositories";
 import { useOrderByIdSelector } from "./useOrderByIdSelector";
 import { makeOrderEntityId } from "../../utils";
+import {
+  makeOrdersServiceMock,
+  type MockedOrdersService,
+} from "../../repositories/ordersRepository/utils/testing";
 import { InMemoryOrdersService } from "../../repositories/ordersRepository/OrdersService/InMemoryOrdersService";
 
 describe(`${useOrderByIdSelector.name}: Delete Order and Item`, () => {

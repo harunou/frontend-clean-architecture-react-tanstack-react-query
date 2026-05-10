@@ -1,5 +1,5 @@
 import type { Presenter } from "../../Order.types";
-import type { ItemEntity, OrderEntityId } from "../../../../repositories/ordersRepository";
+import type { ItemEntity, OrderEntityId } from "../../../../repositories";
 import {
   useOrderByIdSelector,
   useIsLastOrderIdSelector,

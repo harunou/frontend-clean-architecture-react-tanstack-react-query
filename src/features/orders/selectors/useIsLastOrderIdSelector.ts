@@ -1,5 +1,4 @@
-import type { OrderEntityId } from "../repositories/ordersRepository";
-import { ordersRepository } from "../repositories";
+import { ordersRepository, type OrderEntityId } from "../repositories";
 
 export const useIsLastOrderIdSelector = (orderId: OrderEntityId): boolean => {
   const { data } = ordersRepository.useGetOrders();

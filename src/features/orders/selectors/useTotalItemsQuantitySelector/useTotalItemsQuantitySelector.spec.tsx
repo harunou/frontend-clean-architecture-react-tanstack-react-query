@@ -3,13 +3,13 @@ import { useTotalItemsQuantitySelector } from "./useTotalItemsQuantitySelector";
 import { renderHook } from "@testing-library/react";
 import type { FC, PropsWithChildren } from "react";
 import type { UserEvent } from "@testing-library/user-event";
-import type { OrderEntity } from "../../repositories/ordersRepository";
+import type { OrderEntity } from "../../repositories";
 import { resetOrderEntitiesFactories, makeOrderEntities } from "../../utils/testing";
+import { makeComponentFixture } from "../../utils/testing/makeComponentFixture";
 import {
   makeOrdersServiceMock,
   type MockedOrdersService,
 } from "../../repositories/ordersRepository/utils/testing";
-import { makeComponentFixture } from "../../utils/testing/makeComponentFixture";
 
 interface LocalTestContext {
   Fixture: FC<PropsWithChildren<unknown>>;

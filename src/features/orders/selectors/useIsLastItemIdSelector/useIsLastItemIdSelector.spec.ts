@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import type { OrderEntity } from "../../repositories/ordersRepository";
+import type { OrderEntity } from "../../repositories";
 import { makeOrderEntities, resetOrderEntitiesFactories } from "../../utils/testing";
 import { makeItemEntityId, makeOrderEntityId } from "../../utils";
 import { select } from "./useIsLastItemIdSelector";

@@ -2,12 +2,12 @@ import { useController } from "./useController";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { renderHook } from "@testing-library/react";
 import type { PropsWithChildren, FC } from "react";
+import { makeComponentFixture } from "../../../../utils/testing/makeComponentFixture";
+import type { ItemEntityId, OrderEntityId } from "../../../../repositories";
 import {
   makeOrdersServiceMock,
   type MockedOrdersService,
 } from "../../../../repositories/ordersRepository/utils/testing";
-import { makeComponentFixture } from "../../../../utils/testing/makeComponentFixture";
-import type { ItemEntityId, OrderEntityId } from "../../../../repositories/ordersRepository";
 
 interface LocalTestContext {
   Fixture: FC<PropsWithChildren<unknown>>;

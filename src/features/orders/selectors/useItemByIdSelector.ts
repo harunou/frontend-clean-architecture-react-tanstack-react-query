@@ -1,5 +1,9 @@
-import type { ItemEntity, ItemEntityId, OrderEntityId } from "../repositories/ordersRepository";
-import { ordersRepository } from "../repositories";
+import {
+  ordersRepository,
+  type ItemEntity,
+  type ItemEntityId,
+  type OrderEntityId,
+} from "../repositories";
 
 export const useItemByIdSelector = (
   orderId: OrderEntityId,

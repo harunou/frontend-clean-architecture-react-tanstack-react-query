@@ -1,5 +1,4 @@
-import type { ItemEntityId, OrderEntityId } from "../repositories/ordersRepository";
-import { ordersRepository } from "../repositories";
+import { ordersRepository, type ItemEntityId, type OrderEntityId } from "../repositories";
 
 export const useIsItemProcessingSelector = (
   orderId: OrderEntityId,

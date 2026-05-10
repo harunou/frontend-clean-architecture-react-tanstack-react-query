@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useDeleteOrderUseCase } from "../../../../useCases";
 import type { DeleteOrderController } from "../DeleteOrder.types";
-import type { OrderEntityId } from "../../../../repositories/ordersRepository";
+import type { OrderEntityId } from "../../../../repositories";
 import { usePresenter } from "./usePresenter";
 
 export const useController = (): DeleteOrderController => {

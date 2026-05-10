@@ -1,16 +1,16 @@
 import { renderHook } from "@testing-library/react";
 import type { FC, PropsWithChildren } from "react";
 import { describe, beforeEach, vi, afterEach, it, expect } from "vitest";
-import type { OrderEntity } from "../../../../repositories/ordersRepository";
+import type { OrderEntity } from "../../../../repositories";
 import { makeOrderEntities, resetOrderEntitiesFactories } from "../../../../utils/testing";
-import {
-  makeOrdersServiceMock,
-  type MockedOrdersService,
-} from "../../../../repositories/ordersRepository/utils/testing";
 import { makeComponentFixture } from "../../../../utils/testing/makeComponentFixture";
 import { usePresenter } from "./usePresenter";
 import { makeDeferred } from "../../../../../../utils/testing";
 import { ordersRepository } from "../../../../repositories";
+import {
+  makeOrdersServiceMock,
+  type MockedOrdersService,
+} from "../../../../repositories/ordersRepository/utils/testing";
 
 interface LocalTestContext {
   Fixture: FC<PropsWithChildren<unknown>>;

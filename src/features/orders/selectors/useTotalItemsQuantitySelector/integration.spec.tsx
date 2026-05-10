@@ -5,14 +5,14 @@ import { memo, type FC, type PropsWithChildren } from "react";
 import type { UserEvent } from "@testing-library/user-event";
 import { output } from "../../../../utils/testing";
 import { ordersRepository } from "../../repositories";
-import type { OrderEntity, OrderEntityId, ItemEntityId } from "../../repositories/ordersRepository";
+import type { OrderEntity, OrderEntityId, ItemEntityId } from "../../repositories";
 import { makeItemEntityId, makeOrderEntityId } from "../../utils";
 import { resetOrderEntitiesFactories, makeOrderEntities } from "../../utils/testing";
+import { makeComponentFixture } from "../../utils/testing/makeComponentFixture";
 import {
   makeOrdersServiceMock,
   type MockedOrdersService,
 } from "../../repositories/ordersRepository/utils/testing";
-import { makeComponentFixture } from "../../utils/testing/makeComponentFixture";
 import { InMemoryOrdersService } from "../../repositories/ordersRepository/OrdersService/InMemoryOrdersService";
 
 interface LocalTestContext {

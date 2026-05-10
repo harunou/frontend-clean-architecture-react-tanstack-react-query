@@ -2,13 +2,9 @@ import type { FC, PropsWithChildren } from "react";
 import { describe, beforeEach, vi, afterEach, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import type { UserEvent } from "@testing-library/user-event";
-import type { OrderEntity } from "../repositories/ordersRepository";
+import type { OrderEntity } from "../repositories";
 import type { OrdersResource } from "../types";
 import { makeOrderEntities, resetOrderEntitiesFactories } from "../utils/testing";
-import {
-  makeOrdersServiceMock,
-  type MockedOrdersService,
-} from "../repositories/ordersRepository/utils/testing";
 import { makeComponentFixture } from "../utils/testing/makeComponentFixture";
 import {
   deleteItemButtonTestId,
@@ -16,6 +12,10 @@ import {
   deleteOrderButtonTestId,
 } from "../testIds";
 import { Orders } from "./Orders";
+import {
+  makeOrdersServiceMock,
+  type MockedOrdersService,
+} from "../repositories/ordersRepository/utils/testing";
 
 describe(`${Orders.displayName} Integration Test`, () => {
   interface IntegrationTestContext {
