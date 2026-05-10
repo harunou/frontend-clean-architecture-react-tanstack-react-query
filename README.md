@@ -51,6 +51,17 @@ Here is the dependency graph:
 
 ```console
 ./src/features/orders
+├── api
+│   ├── httpClient
+│   │   ├── httpClient.ts
+│   │   └── index.ts
+│   ├── index.ts
+│   ├── OrdersApi
+│   │   ├── index.ts
+│   │   ├── OrdersApi.factory.ts
+│   │   ├── OrdersApi.ts
+│   │   └── OrdersApi.types.ts
+│   └── types.ts
 ├── cli
 │   ├── cli.tsx
 │   ├── commands
@@ -69,44 +80,74 @@ Here is the dependency graph:
 │   ├── hooks
 │   │   └── useConsoleRenderer.ts
 │   └── index.ts
-├── externalResources
-│   ├── httpClient
-│   │   ├── httpClient.ts
-│   │   └── index.ts
+├── components
 │   ├── index.ts
-│   ├── OrdersApi
+│   ├── Order
+│   │   ├── hooks
+│   │   │   ├── index.ts
+│   │   │   ├── useController.ts
+│   │   │   └── usePresenter
+│   │   │       ├── index.ts
+│   │   │       ├── usePresenter.spec.ts
+│   │   │       └── usePresenter.ts
 │   │   ├── index.ts
-│   │   ├── OrdersApi.factory.ts
-│   │   ├── OrdersApi.ts
-│   │   └── OrdersApi.types.ts
-│   └── types.ts
+│   │   ├── Order.tsx
+│   │   └── Order.types.ts
+│   ├── OrderItem
+│   │   ├── hooks
+│   │   │   ├── index.ts
+│   │   │   ├── useController
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── useController.spec.tsx
+│   │   │   │   └── useController.ts
+│   │   │   └── usePresenter.ts
+│   │   ├── index.ts
+│   │   ├── OrderItem.tsx
+│   │   └── OrderItem.types.ts
+│   └── OrdersResourcePicker
+│       ├── index.ts
+│       └── OrdersResourcePicker.tsx
 ├── index.ts
+├── Orders
+│   ├── hooks
+│   │   ├── index.ts
+│   │   ├── useController.ts
+│   │   └── usePresenter.ts
+│   ├── index.ts
+│   ├── integration.spec.tsx
+│   ├── Orders.spec.tsx
+│   ├── Orders.tsx
+│   └── Orders.types.ts
 ├── repositories
 │   ├── index.ts
 │   └── ordersRepository
-│       ├── hooks
-│       │   ├── index.ts
-│       │   ├── useGatewayResource.ts
-│       │   └── useOrdersGateway.ts
+│       ├── hooks.ts
 │       ├── index.ts
-│       ├── OrdersGateway
-│       │   ├── index.ts
-│       │   ├── InMemoryOrdersGateway
-│       │   │   ├── index.ts
-│       │   │   ├── InMemoryOrdersGateway.spec.ts
-│       │   │   └── InMemoryOrdersGateway.ts
-│       │   ├── makeOrderEntities.ts
-│       │   ├── OrdersGateway.types.ts
-│       │   └── RemoteOrdersGateway
-│       │       ├── index.ts
-│       │       ├── mappers.ts
-│       │       ├── RemoteOrdersGateway.spec.ts
-│       │       └── RemoteOrdersGateway.ts
 │       ├── ordersRepositoryKeys.ts
 │       ├── ordersRepository.ts
-│       └── ordersRepository.utils.ts
+│       ├── ordersRepository.types.ts
+│       ├── OrdersService
+│       │   ├── index.ts
+│       │   ├── InMemoryOrdersService
+│       │   │   ├── index.ts
+│       │   │   ├── InMemoryOrdersService.spec.ts
+│       │   │   ├── InMemoryOrdersService.ts
+│       │   │   └── makeMockOrderEntities.ts
+│       │   ├── OrdersService.ts
+│       │   └── RemoteOrdersService
+│       │       ├── index.ts
+│       │       ├── mappers.ts
+│       │       ├── RemoteOrdersService.spec.ts
+│       │       └── RemoteOrdersService.ts
+│       └── utils
+│           ├── index.ts
+│           ├── isOrderItemMutationVariables.ts
+│           └── testing
+│               ├── index.ts
+│               └── makeOrdersServiceMock.ts
 ├── selectors
 │   ├── index.ts
+│   ├── useIsItemProcessingSelector.ts
 │   ├── useIsLastItemIdSelector
 │   │   ├── index.ts
 │   │   ├── useIsLastItemIdSelector.spec.ts
@@ -137,77 +178,26 @@ Here is the dependency graph:
 │   │   ├── index.ts
 │   │   └── useOrdersPresentationStore.ts
 │   ├── index.ts
-│   └── ordersPresentationStore.ts
+│   ├── ordersPresentationStore.ts
+│   └── ordersPresentationStore.types.ts
+├── testIds.ts
 ├── types
-│   ├── entities
-│   │   ├── index.ts
-│   │   ├── ItemEntity
-│   │   │   ├── index.ts
-│   │   │   └── ItemEntity.ts
-│   │   ├── OrderEntity
-│   │   │   ├── index.ts
-│   │   │   └── OrderEntity.ts
-│   │   └── OrdersPresentationEntity.ts
 │   ├── index.ts
-│   ├── OrdersResource.ts
-│   └── repositories
-│       ├── index.ts
-│       └── OrdersRepository.ts
+│   └── OrdersResource.ts
 ├── useCases
 │   ├── index.ts
 │   └── useDeleteOrderUseCase
 │       ├── index.ts
 │       ├── useDeleteOrderUseCase.spec.tsx
 │       └── useDeleteOrderUseCase.ts
-├── utils
-│   ├── index.ts
-│   └── testing
-│       ├── index.ts
-│       ├── itemEntityFactory.ts
-│       ├── makeComponentFixture.tsx
-│       ├── makeOrderEntities.ts
-│       ├── mockUseOrdersGateway.ts
-│       └── orderEntityFactory.ts
-└── views
-    ├── containers
-    │   ├── index.ts
-    │   ├── Order
-    │   │   ├── hooks
-    │   │   │   ├── index.ts
-    │   │   │   ├── useController.ts
-    │   │   │   └── usePresenter
-    │   │   │       ├── index.ts
-    │   │   │       ├── usePresenter.spec.ts
-    │   │   │       └── usePresenter.ts
-    │   │   ├── index.ts
-    │   │   ├── Order.tsx
-    │   │   └── Order.types.ts
-    │   ├── OrderItem
-    │   │   ├── hooks
-    │   │   │   ├── index.ts
-    │   │   │   ├── useController
-    │   │   │   │   ├── index.ts
-    │   │   │   │   ├── useController.spec.tsx
-    │   │   │   │   └── useController.ts
-    │   │   │   └── usePresenter.ts
-    │   │   ├── index.ts
-    │   │   ├── OrderItem.tsx
-    │   │   └── OrderItem.types.ts
-    │   ├── Orders
-    │   │   ├── hooks
-    │   │   │   ├── index.ts
-    │   │   │   ├── useController.ts
-    │   │   │   └── usePresenter.ts
-    │   │   ├── index.ts
-    │   │   ├── integration.spec.tsx
-    │   │   ├── Orders.spec.tsx
-    │   │   ├── Orders.tsx
-    │   │   └── Orders.types.ts
-    │   └── OrdersResourcePicker
-    │       ├── index.ts
-    │       └── OrdersResourcePicker.tsx
+└── utils
     ├── index.ts
-    └── testIds.ts
+    └── testing
+        ├── index.ts
+        ├── itemEntityFactory.ts
+        ├── makeComponentFixture.tsx
+        ├── makeOrderEntities.ts
+        └── orderEntityFactory.ts
 
-43 directories, 115 files
+39 directories, 109 files
 ```
