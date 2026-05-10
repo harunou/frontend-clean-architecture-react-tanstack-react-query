@@ -2,11 +2,10 @@ import type { FC, PropsWithChildren } from "react";
 import { describe, beforeEach, vi, afterEach, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import type { UserEvent } from "@testing-library/user-event";
-import type { OrderEntity } from "../../../repositories/ordersRepository";
+import type { OrderEntity, OrdersGateway } from "../../../repositories/ordersRepository";
 import type { OrdersResource } from "../../../types";
 import { makeOrderEntities, resetOrderEntitiesFactories } from "../../../utils/testing";
 import { makeComponentFixture } from "../../../utils/testing/makeComponentFixture";
-import { InMemoryOrdersGateway } from "../../../repositories/ordersRepository/OrdersGateway";
 import { deleteItemButtonTestId, totalItemQuantityTestId } from "../../testIds";
 import { Orders } from "./Orders";
 import { deleteOrderButtonTestId } from "../../testIds";
@@ -17,7 +16,7 @@ describe(`${Orders.displayName} Integration Test`, () => {
     Sut: FC<{ resource?: OrdersResource }>;
     user: UserEvent;
     orderEntities: OrderEntity[];
-    inMemoryOrdersGateway: InMemoryOrdersGateway;
+    ordersService: OrdersGateway;
   }
 
   beforeEach<IntegrationTestContext>((context) => {
@@ -34,7 +33,7 @@ describe(`${Orders.displayName} Integration Test`, () => {
     );
     context.user = user;
     context.orderEntities = makeOrderEntities();
-    context.inMemoryOrdersGateway = InMemoryOrdersGateway.make();
+    context.ordersService = InMemoryOrdersService.make();
   });
 
   afterEach(() => {

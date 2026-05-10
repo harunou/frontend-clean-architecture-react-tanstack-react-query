@@ -17,7 +17,7 @@ import { useDeleteOrderUseCase } from "../../useCases";
 import { ordersRepository } from "../../repositories";
 import { useOrderByIdSelector } from "./useOrderByIdSelector";
 import { makeOrderEntityId } from "../../utils";
-import { InMemoryOrdersGateway } from "../../repositories/ordersRepository/OrdersGateway";
+import { InMemoryOrdersGateway } from "../../repositories/ordersRepository/OrdersService";
 
 describe(`${useOrderByIdSelector.name}: Delete Order and Item`, () => {
   interface IntegrationTestContext {

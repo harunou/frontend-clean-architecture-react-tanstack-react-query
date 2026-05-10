@@ -7,15 +7,16 @@ import {
   useIsMutating,
   useMutationState,
 } from "@tanstack/react-query";
-import { useGatewayResource, useOrdersGateway } from "./hooks";
+import { useGatewayResource } from "./hooks";
 import { ordersRepositoryKeys } from "./ordersRepositoryKeys";
 import { isOrderItemMutationVariables } from "./ordersRepository.utils";
+import { OrdersService } from "./OrdersService";
 
 const DEFAULT_ORDERS: OrderEntity[] = [];
 
 const useGetOrders: OrdersRepository["useGetOrders"] = (forceResource) => {
   const resource = useGatewayResource(forceResource);
-  const gateway = useOrdersGateway(resource);
+  const gateway = OrdersService.make(resource);
   const getOrdersKey = ordersRepositoryKeys.makeGetOrdersKey(resource);
 
   const { data } = useQuery({
@@ -31,7 +32,7 @@ const useGetOrders: OrdersRepository["useGetOrders"] = (forceResource) => {
 
 const useGetOrdersQueryState: OrdersRepository["useGetOrdersQueryState"] = (forceResource) => {
   const resource = useGatewayResource(forceResource);
-  const gateway = useOrdersGateway(resource);
+  const gateway = OrdersService.make(resource);
   const getOrdersKey = ordersRepositoryKeys.makeGetOrdersKey(resource);
 
   return useQuery({
@@ -46,7 +47,7 @@ const useGetOrdersQueryState: OrdersRepository["useGetOrdersQueryState"] = (forc
 const useDeleteOrder: OrdersRepository["useDeleteOrder"] = (forceResource) => {
   const queryClient = useQueryClient();
   const resource = useGatewayResource(forceResource);
-  const gateway = useOrdersGateway(resource);
+  const gateway = OrdersService.make(resource);
   const deleteOrderKey = ordersRepositoryKeys.makeDeleteOrderKey(resource);
   const getOrdersKey = ordersRepositoryKeys.makeGetOrdersKey(resource);
 
@@ -64,7 +65,7 @@ const useDeleteOrder: OrdersRepository["useDeleteOrder"] = (forceResource) => {
 const useDeleteOrderItem: OrdersRepository["useDeleteOrderItem"] = (forceResource) => {
   const queryClient = useQueryClient();
   const resource = useGatewayResource(forceResource);
-  const gateway = useOrdersGateway(resource);
+  const gateway = OrdersService.make(resource);
   const deleteOrderItemKey = ordersRepositoryKeys.makeDeleteOrderItemKey(resource);
   const getOrdersKey = ordersRepositoryKeys.makeGetOrdersKey(resource);
 

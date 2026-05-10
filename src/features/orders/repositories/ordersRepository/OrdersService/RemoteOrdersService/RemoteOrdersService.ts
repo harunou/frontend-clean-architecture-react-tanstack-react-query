@@ -1,11 +1,15 @@
 import { OrdersApi, type OrderDto } from "../../../../externalResources";
-import type { ItemEntityId, OrderEntity, OrderEntityId } from "../../ordersRepository.types";
-import type { OrdersGateway } from "../OrdersGateway.types";
+import type {
+  ItemEntityId,
+  OrderEntity,
+  OrderEntityId,
+  OrdersGateway,
+} from "../../ordersRepository.types";
 import { toOrderEntity } from "./mappers";
 
-export class RemoteOrdersGateway implements OrdersGateway {
-  static make(): RemoteOrdersGateway {
-    return new RemoteOrdersGateway(OrdersApi.make());
+export class RemoteOrdersService implements OrdersGateway {
+  static make(): RemoteOrdersService {
+    return new RemoteOrdersService(OrdersApi.make());
   }
 
   constructor(private api: OrdersApi) {}

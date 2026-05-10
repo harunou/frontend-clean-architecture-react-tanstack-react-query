@@ -1,5 +1,10 @@
 import { factoryT, fields } from "factory-t";
-import type { OrderEntity, OrderEntityId, ItemEntity, ItemEntityId } from "../ordersRepository.types";
+import type {
+  OrderEntity,
+  OrderEntityId,
+  ItemEntity,
+  ItemEntityId,
+} from "../ordersRepository.types";
 import { randomFrom1To100 } from "../../../../../utils/testing";
 
 export const itemEntityFactory = factoryT<ItemEntity>({

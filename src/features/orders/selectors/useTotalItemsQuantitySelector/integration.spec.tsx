@@ -15,7 +15,7 @@ import {
   mockUseOrdersGateway,
 } from "../../utils/testing";
 import { makeComponentFixture } from "../../utils/testing/makeComponentFixture";
-import { InMemoryOrdersGateway } from "../../repositories/ordersRepository/OrdersGateway";
+import { InMemoryOrdersGateway } from "../../repositories/ordersRepository/OrdersService";
 
 interface LocalTestContext {
   Fixture: FC<PropsWithChildren<unknown>>;

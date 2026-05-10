@@ -13,3 +13,9 @@ export type ItemEntity = UniqueEntity<ItemEntityId> & {
   productId: string;
   quantity: number;
 };
+
+export interface OrdersGateway {
+  getOrders(): Promise<OrderEntity[]>;
+  deleteOrder(orderId: OrderEntityId): Promise<void>;
+  deleteItem(orderId: OrderEntityId, itemId: ItemEntityId): Promise<void>;
+}

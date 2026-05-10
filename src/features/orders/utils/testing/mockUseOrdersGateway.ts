@@ -1,6 +1,6 @@
 import { type Mocked, vi } from "vitest";
 import * as useOrdersGatewayModule from "../../repositories/ordersRepository/hooks/useOrdersGateway";
-import type { OrdersGateway } from "../../repositories/ordersRepository/OrdersGateway/OrdersGateway.types";
+import type { OrdersGateway } from "../../repositories/ordersRepository/OrdersService/OrdersGateway.types";
 
 export type MockedOrdersGateway = Mocked<OrdersGateway>;
 

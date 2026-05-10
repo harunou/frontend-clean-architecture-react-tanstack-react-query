@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { InMemoryOrdersGateway } from "./InMemoryOrdersGateway";
+import { InMemoryOrdersService } from "./InMemoryOrdersService";
 import type { OrderEntity } from "../../ordersRepository.types";
 import {
   itemEntityFactory,
@@ -11,17 +11,17 @@ import { mockSleep } from "../../../../../../utils/testing/mockSleep";
 
 interface LocalTestContext {
   orders: OrderEntity[];
-  localOrdersGateway: InMemoryOrdersGateway;
+  localOrdersGateway: InMemoryOrdersService;
 }
 
-describe(`${InMemoryOrdersGateway.name}`, () => {
+describe(`${InMemoryOrdersService.name}`, () => {
   beforeEach<LocalTestContext>((context) => {
     mockSleep();
     orderEntityFactory.resetCount();
     itemEntityFactory.resetCount();
     const orders = makeOrderEntities();
     context.orders = orders;
-    context.localOrdersGateway = new InMemoryOrdersGateway(orders);
+    context.localOrdersGateway = new InMemoryOrdersService(orders);
   });
 
   describe("fetchOrders", () => {
@@ -32,7 +32,7 @@ describe(`${InMemoryOrdersGateway.name}`, () => {
     });
 
     it("returns an empty array if no orders are available", async () => {
-      const localOrdersGateway = new InMemoryOrdersGateway([]);
+      const localOrdersGateway = new InMemoryOrdersService([]);
 
       const fetchOrdersPromise = await localOrdersGateway.getOrders();
 
@@ -78,7 +78,7 @@ describe(`${InMemoryOrdersGateway.name}`, () => {
 
   describe("setOrders", () => {
     it<LocalTestContext>("adds new orders to the existing ones", async (context) => {
-      const gateway = new InMemoryOrdersGateway([]);
+      const gateway = new InMemoryOrdersService([]);
 
       gateway.setOrders(context.orders);
 
