@@ -32,7 +32,7 @@ describe(`${Orders.displayName}`, () => {
 
     expect(screen.getByTestId(ordersTestId)).toBeInTheDocument();
     expect(screen.getByTestId(totalItemQuantityTestId)).toHaveTextContent("0");
-    expect(screen.getByText("Status: loading...")).toBeInTheDocument();
+    expect(screen.getByText("loading")).toBeInTheDocument();
   });
 
   it("renders multiple orders", () => {
@@ -47,7 +47,7 @@ describe(`${Orders.displayName}`, () => {
 
     expect(screen.getByTestId(ordersTestId)).toBeInTheDocument();
     expect(screen.getByTestId(totalItemQuantityTestId)).toHaveTextContent("5");
-    expect(screen.getByText("Status: idle")).toBeInTheDocument();
+    expect(screen.getByText("idle")).toBeInTheDocument();
     orderIds.forEach((id) => {
       expect(screen.getByTestId(`order-${id}`)).toBeInTheDocument();
     });
@@ -64,7 +64,7 @@ describe(`${Orders.displayName}`, () => {
 
     expect(screen.getByTestId(ordersTestId)).toBeInTheDocument();
     expect(screen.getByTestId(totalItemQuantityTestId)).toHaveTextContent("0");
-    expect(screen.getByText("Status: idle")).toBeInTheDocument();
+    expect(screen.getByText("idle")).toBeInTheDocument();
     expect(screen.queryByTestId(/^order-/)).not.toBeInTheDocument();
   });
 
