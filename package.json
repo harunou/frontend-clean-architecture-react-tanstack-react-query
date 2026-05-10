@@ -6,18 +6,16 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "npm run test:format && npm run test:types && npm run test:lint",
     "preview": "vite preview",
     "test": "npm run test:format && npm run test:types && npm run test:lint && npm run test:deps && npm run test:unit",
     "test:types": "tsc --build --noEmit",
     "test:unit": "vitest run",
     "test:deps": "depcruise --config ./dependency-cruiser.config.cjs ./src",
-    "test:format": "npm run format:check",
+    "test:format": "prettier --check .",
     "test:lint": "eslint --format=codeframe --max-warnings=0 ./",
     "deps:graph": "depcruise --config ./dependency-cruiser.config.cjs ./src --include-only '^src' --exclude '(.factory|test(s?)|spec(s?)|types|utils)' --collapse 5  --output-type dot | dot -T svg > ./dependency-graph.svg",
-    "vitest:watch": "vitest watch --test-timeout 0",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "test:unit:watch": "vitest watch --test-timeout 0",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@esfx/async-deferred": "^1.0.0",

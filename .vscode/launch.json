@@ -7,16 +7,16 @@
     {
       "request": "launch",
       "type": "node-terminal",
-      "name": "vitest:watch:current",
-      "command": "npm run vitest:watch -- ${relativeFile}",
+      "name": "test:unit:watch:current",
+      "command": "npm run test:unit:watch -- ${relativeFile}",
       "smartStep": true,
       "cwd": "${workspaceFolder}"
     },
     {
       "request": "launch",
       "type": "node-terminal",
-      "name": "vitest:watch:all",
-      "command": "npm run vitest:watch",
+      "name": "test:unit:watch",
+      "command": "npm run test:unit:watch",
       "cwd": "${workspaceFolder}"
     }
   ]
