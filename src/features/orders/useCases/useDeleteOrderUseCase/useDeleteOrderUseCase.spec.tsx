@@ -3,12 +3,11 @@ import { useDeleteOrderUseCase } from "./useDeleteOrderUseCase";
 import type { UserEvent } from "@testing-library/user-event";
 import type { FC, PropsWithChildren } from "react";
 import type { OrderEntity, OrderEntityId } from "../../repositories/ordersRepository";
+import { makeOrderEntities, resetOrderEntitiesFactories } from "../../utils/testing";
 import {
-  makeOrderEntities,
-  type MockedOrdersGateway,
-  resetOrderEntitiesFactories,
-  mockUseOrdersGateway,
-} from "../../utils/testing";
+  makeOrdersServiceMock,
+  type MockedOrdersService,
+} from "../../repositories/ordersRepository/utils/testing";
 import { makeComponentFixture } from "../../utils/testing/makeComponentFixture";
 import { useOrderIdsSelector } from "../../selectors";
 import { output } from "../../../../utils/testing";
@@ -19,8 +18,8 @@ interface LocalTestContext {
   Fixture: FC<PropsWithChildren<unknown>>;
   Sut: FC;
   user: UserEvent;
-  ordersGateway: MockedOrdersGateway;
   orders: OrderEntity[];
+  ordersServiceMock: MockedOrdersService;
 }
 
 type Output = {
@@ -31,6 +30,8 @@ const outputTestId = "output-test-id";
 const deleteOrderItemButtonTestId = "delete-button-test-id";
 
 describe(`${useDeleteOrderUseCase.name}`, () => {
+  const ordersServiceMock = makeOrdersServiceMock();
+
   beforeEach<LocalTestContext>((context) => {
     vi.useFakeTimers();
     resetOrderEntitiesFactories();
@@ -66,12 +67,11 @@ describe(`${useDeleteOrderUseCase.name}`, () => {
       );
     };
     context.user = user;
-    context.ordersGateway = mockUseOrdersGateway();
     context.orders = makeOrderEntities();
+    context.ordersServiceMock = ordersServiceMock.mock;
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
     vi.useRealTimers();
   });
 
@@ -80,8 +80,10 @@ describe(`${useDeleteOrderUseCase.name}`, () => {
     const orders0 = [...context.orders];
     const orders1 = context.orders.filter((order) => order.id !== orderToDelete.id);
 
-    context.ordersGateway.getOrders.mockResolvedValueOnce(orders0).mockResolvedValueOnce(orders1);
-    context.ordersGateway.deleteOrder.mockResolvedValueOnce();
+    context.ordersServiceMock.getOrders
+      .mockResolvedValueOnce(orders0)
+      .mockResolvedValueOnce(orders1);
+    context.ordersServiceMock.deleteOrder.mockResolvedValueOnce();
 
     render(<context.Sut />);
 

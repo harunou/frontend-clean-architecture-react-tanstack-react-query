@@ -2,12 +2,11 @@ import type { FC, PropsWithChildren } from "react";
 import { describe, beforeEach, vi, afterEach, it, expect } from "vitest";
 import { makeDeferred, output } from "../../../../utils/testing";
 import type { OrderEntity, OrderEntityId } from "../../repositories/ordersRepository";
+import { makeOrderEntities, resetOrderEntitiesFactories } from "../../utils/testing";
 import {
-  type MockedOrdersGateway,
-  mockUseOrdersGateway,
-  makeOrderEntities,
-  resetOrderEntitiesFactories,
-} from "../../utils/testing";
+  makeOrdersServiceMock,
+  type MockedOrdersService,
+} from "../../repositories/ordersRepository/utils/testing";
 import { makeComponentFixture } from "../../utils/testing/makeComponentFixture";
 import { useOrderIdsSelector } from "./useOrderIdsSelector";
 import { render, screen } from "@testing-library/react";
@@ -15,8 +14,8 @@ import { render, screen } from "@testing-library/react";
 interface LocalTestContext {
   Fixture: FC<PropsWithChildren<unknown>>;
   Sut: FC;
-  ordersGateway: MockedOrdersGateway;
   orderEntities: OrderEntity[];
+  ordersServiceMock: MockedOrdersService;
 }
 
 type Output = {
@@ -26,6 +25,8 @@ type Output = {
 const outputTestId = "output-test-id";
 
 describe(`${useOrderIdsSelector.name}`, () => {
+  const ordersServiceMock = makeOrdersServiceMock();
+
   beforeEach<LocalTestContext>((context) => {
     vi.useFakeTimers();
     resetOrderEntitiesFactories();
@@ -50,17 +51,16 @@ describe(`${useOrderIdsSelector.name}`, () => {
         </Fixture>
       );
     };
-    context.ordersGateway = mockUseOrdersGateway();
-    context.orderEntities = makeOrderEntities(3); // Create 3 orders for testing
+    context.orderEntities = makeOrderEntities(3);
+    context.ordersServiceMock = ordersServiceMock.mock;
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
     vi.useRealTimers();
   });
 
   it<LocalTestContext>("returns an empty array when no orders are available", async (context) => {
-    context.ordersGateway.getOrders.mockResolvedValue([]);
+    context.ordersServiceMock.getOrders.mockResolvedValue([]);
 
     render(<context.Sut />);
 
@@ -72,7 +72,7 @@ describe(`${useOrderIdsSelector.name}`, () => {
   });
 
   it<LocalTestContext>("returns an array of order IDs when orders are available", async (context) => {
-    context.ordersGateway.getOrders.mockResolvedValue(context.orderEntities);
+    context.ordersServiceMock.getOrders.mockResolvedValue(context.orderEntities);
 
     render(<context.Sut />);
 
@@ -86,7 +86,7 @@ describe(`${useOrderIdsSelector.name}`, () => {
 
   it<LocalTestContext>("returns an empty array while orders are being loaded", async (context) => {
     const { promise } = makeDeferred<OrderEntity[]>();
-    context.ordersGateway.getOrders.mockReturnValue(promise);
+    context.ordersServiceMock.getOrders.mockReturnValue(promise);
 
     render(<context.Sut />);
 

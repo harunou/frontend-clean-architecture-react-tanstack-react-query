@@ -4,7 +4,10 @@ import { describe, beforeEach, vi, afterEach, it, expect } from "vitest";
 import { makeDeferred, output } from "../../../../utils/testing";
 import type { OrderEntity } from "../../repositories/ordersRepository";
 import { makeOrderEntityId, makeItemEntityId } from "../../utils";
-import { type MockedOrdersGateway, mockUseOrdersGateway } from "../../utils/testing";
+import {
+  makeOrdersServiceMock,
+  type MockedOrdersService,
+} from "../../repositories/ordersRepository/utils/testing";
 import { makeComponentFixture } from "../../utils/testing/makeComponentFixture";
 import { useIsOrdersProcessingSelector } from "./useIsOrdersProcessingSelector";
 import { render, screen } from "@testing-library/react";
@@ -14,7 +17,7 @@ interface LocalTestContext {
   Fixture: FC<PropsWithChildren<unknown>>;
   Sut: FC;
   user: UserEvent;
-  ordersGateway: MockedOrdersGateway;
+  ordersServiceMock: MockedOrdersService;
 }
 
 type Output = {
@@ -25,6 +28,8 @@ const outputTestId = "output-test-id";
 const deleteOrderItemButtonTestId = "delete-button-test-id";
 
 describe(`${useIsOrdersProcessingSelector.name}`, () => {
+  const ordersServiceMock = makeOrdersServiceMock();
+
   beforeEach<LocalTestContext>((context) => {
     vi.useFakeTimers();
 
@@ -60,17 +65,16 @@ describe(`${useIsOrdersProcessingSelector.name}`, () => {
       );
     };
     context.user = user;
-    context.ordersGateway = mockUseOrdersGateway();
+    context.ordersServiceMock = ordersServiceMock.mock;
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
     vi.useRealTimers();
   });
 
   it<LocalTestContext>("displays isLoading as true when orders are being fetched", async (context) => {
     const { promise } = makeDeferred<OrderEntity[]>();
-    context.ordersGateway.getOrders.mockReturnValue(promise);
+    context.ordersServiceMock.getOrders.mockReturnValue(promise);
 
     render(<context.Sut />);
 
@@ -82,7 +86,7 @@ describe(`${useIsOrdersProcessingSelector.name}`, () => {
   });
 
   it<LocalTestContext>("displays isLoading as false when orders are fetched", async (context) => {
-    context.ordersGateway.getOrders.mockResolvedValue([]);
+    context.ordersServiceMock.getOrders.mockResolvedValue([]);
 
     render(<context.Sut />);
 
@@ -95,8 +99,8 @@ describe(`${useIsOrdersProcessingSelector.name}`, () => {
 
   it<LocalTestContext>("displays isLoading as true when order item is being deleted", async (context) => {
     const { promise } = makeDeferred<void>();
-    context.ordersGateway.getOrders.mockResolvedValue([]);
-    context.ordersGateway.deleteItem.mockReturnValue(promise);
+    context.ordersServiceMock.getOrders.mockResolvedValue([]);
+    context.ordersServiceMock.deleteItem.mockReturnValue(promise);
 
     render(<context.Sut />);
 

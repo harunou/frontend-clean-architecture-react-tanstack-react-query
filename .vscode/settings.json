@@ -32,5 +32,6 @@
     "**/coverage": true,
     "**/build": true
   },
-  "CodeGPT.apiKey": "CodeGPT Plus Beta"
+  "CodeGPT.apiKey": "CodeGPT Plus Beta",
+  "js/ts.tsdk.path": "node_modules/typescript/lib"
 }

@@ -2,33 +2,37 @@ import { useController } from "./useController";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { renderHook } from "@testing-library/react";
 import type { PropsWithChildren, FC } from "react";
-import { type MockedOrdersGateway, mockUseOrdersGateway } from "../../../../../utils/testing";
+import {
+  makeOrdersServiceMock,
+  type MockedOrdersService,
+} from "../../../../../repositories/ordersRepository/utils/testing";
 import { makeComponentFixture } from "../../../../../utils/testing/makeComponentFixture";
 import type { ItemEntityId, OrderEntityId } from "../../../../../repositories/ordersRepository";
 
 interface LocalTestContext {
   Fixture: FC<PropsWithChildren<unknown>>;
-  ordersGateway: MockedOrdersGateway;
   orderId: OrderEntityId;
   itemId: ItemEntityId;
+  ordersServiceMock: MockedOrdersService;
 }
 
 describe(`${useController.name}`, () => {
+  const ordersServiceMock = makeOrdersServiceMock();
+
   beforeEach<LocalTestContext>((context) => {
     vi.useFakeTimers();
 
     const { Fixture } = makeComponentFixture();
     context.Fixture = Fixture;
-    context.ordersGateway = mockUseOrdersGateway();
+    context.ordersServiceMock = ordersServiceMock.mock;
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
     vi.useRealTimers();
   });
 
   it<LocalTestContext>("triggers order item deletion on the gateway", async (context) => {
-    context.ordersGateway.deleteItem.mockResolvedValue();
+    context.ordersServiceMock.deleteItem.mockResolvedValue();
     const { result } = renderHook(
       () => useController({ itemId: context.itemId, orderId: context.orderId }),
       {
@@ -39,6 +43,6 @@ describe(`${useController.name}`, () => {
     result.current.deleteOrderItemButtonClicked();
     await vi.runAllTimersAsync();
 
-    expect(context.ordersGateway.deleteItem).toHaveBeenCalledTimes(1);
+    expect(ordersServiceMock.mock.deleteItem).toHaveBeenCalledTimes(1);
   });
 });

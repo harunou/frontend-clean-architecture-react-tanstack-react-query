@@ -4,22 +4,23 @@ import { renderHook } from "@testing-library/react";
 import type { FC, PropsWithChildren } from "react";
 import type { UserEvent } from "@testing-library/user-event";
 import type { OrderEntity } from "../../repositories/ordersRepository";
+import { resetOrderEntitiesFactories, makeOrderEntities } from "../../utils/testing";
 import {
-  resetOrderEntitiesFactories,
-  mockUseOrdersGateway,
-  makeOrderEntities,
-  type MockedOrdersGateway,
-} from "../../utils/testing";
+  makeOrdersServiceMock,
+  type MockedOrdersService,
+} from "../../repositories/ordersRepository/utils/testing";
 import { makeComponentFixture } from "../../utils/testing/makeComponentFixture";
 
 interface LocalTestContext {
   Fixture: FC<PropsWithChildren<unknown>>;
   user: UserEvent;
-  ordersGateway: MockedOrdersGateway;
   orders: OrderEntity[];
+  ordersServiceMock: MockedOrdersService;
 }
 
 describe(`${useTotalItemsQuantitySelector.name}`, () => {
+  const ordersServiceMock = makeOrdersServiceMock();
+
   beforeEach<LocalTestContext>((context) => {
     vi.useFakeTimers();
 
@@ -28,17 +29,16 @@ describe(`${useTotalItemsQuantitySelector.name}`, () => {
     const { Fixture, user } = makeComponentFixture();
     context.Fixture = Fixture;
     context.user = user;
-    context.ordersGateway = mockUseOrdersGateway();
     context.orders = makeOrderEntities();
+    context.ordersServiceMock = ordersServiceMock.mock;
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
     vi.useRealTimers();
   });
 
   it<LocalTestContext>("returns 0 when there are no orders", async (context) => {
-    context.ordersGateway.getOrders.mockResolvedValueOnce([]);
+    context.ordersServiceMock.getOrders.mockResolvedValueOnce([]);
 
     const { result } = renderHook(() => useTotalItemsQuantitySelector(), {
       wrapper: context.Fixture,
@@ -50,7 +50,7 @@ describe(`${useTotalItemsQuantitySelector.name}`, () => {
   });
 
   it<LocalTestContext>("returns 0 when the gateway fails to fetch orders", async (context) => {
-    context.ordersGateway.getOrders.mockRejectedValueOnce([]);
+    context.ordersServiceMock.getOrders.mockRejectedValueOnce([]);
 
     const { result } = renderHook(() => useTotalItemsQuantitySelector(), {
       wrapper: context.Fixture,
@@ -62,7 +62,7 @@ describe(`${useTotalItemsQuantitySelector.name}`, () => {
   });
 
   it<LocalTestContext>("returns total quantity of items in the order ", async (context) => {
-    context.ordersGateway.getOrders.mockResolvedValueOnce(context.orders);
+    context.ordersServiceMock.getOrders.mockResolvedValueOnce(context.orders);
 
     const { result } = renderHook(() => useTotalItemsQuantitySelector(), {
       wrapper: context.Fixture,

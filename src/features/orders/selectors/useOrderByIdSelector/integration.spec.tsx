@@ -3,13 +3,11 @@ import { describe, beforeEach, vi, afterEach, it, expect } from "vitest";
 import { output } from "../../../../utils/testing";
 import type { OrderEntity, OrderEntityId } from "../../repositories/ordersRepository";
 import type { OrdersResource } from "../../types";
+import { makeOrderEntities, resetOrderEntitiesFactories } from "../../utils/testing";
 import {
-  type MockedOrdersGateway,
-  mockUseOrdersGateway,
-  makeOrderEntities,
-  resetOrderEntitiesFactories,
-  restoreMockedUseOrdersGateway,
-} from "../../utils/testing";
+  makeOrdersServiceMock,
+  type MockedOrdersService,
+} from "../../repositories/ordersRepository/utils/testing";
 import { makeComponentFixture } from "../../utils/testing/makeComponentFixture";
 import { render, screen } from "@testing-library/react";
 import type { UserEvent } from "@testing-library/user-event";
@@ -24,8 +22,8 @@ describe(`${useOrderByIdSelector.name}: Delete Order and Item`, () => {
     Fixture: FC<PropsWithChildren<unknown>>;
     Sut: FC<{ resource?: OrdersResource }>;
     user: UserEvent;
-    ordersGateway: MockedOrdersGateway;
     orderEntities: OrderEntity[];
+    ordersServiceMock: MockedOrdersService;
   }
 
   type IntegrationOutput = {
@@ -38,6 +36,8 @@ describe(`${useOrderByIdSelector.name}: Delete Order and Item`, () => {
   const integrationOutputTestId = "integration-output-test-id";
   const deleteOrderButtonTestId = "delete-order-button-test-id";
   const deleteItemButtonTestId = "delete-item-button-test-id";
+
+  const ordersServiceMock = makeOrdersServiceMock();
 
   beforeEach<IntegrationTestContext>((context) => {
     vi.useFakeTimers();
@@ -55,13 +55,11 @@ describe(`${useOrderByIdSelector.name}: Delete Order and Item`, () => {
       const secondOrderFromSelector = useOrderByIdSelector(secondOrderIdOrUnknown);
 
       const onDeleteOrderButtonClick = () => {
-        // Delete order with index 0
         const order = orders.at(0)!;
         executeDeleteOrder({ orderId: order.id });
       };
 
       const onDeleteItemButtonClick = () => {
-        // Delete item with index 0 from remaining order with index 0
         const order = orders.at(0)!;
         const item = order.itemEntities.at(0)!;
         deleteOrderItem({
@@ -94,13 +92,12 @@ describe(`${useOrderByIdSelector.name}: Delete Order and Item`, () => {
       </Fixture>
     );
     context.user = user;
-    context.ordersGateway = mockUseOrdersGateway();
     context.orderEntities = makeOrderEntities();
+    context.ordersServiceMock = ordersServiceMock.mock;
   });
 
   afterEach(() => {
     vi.useRealTimers();
-    vi.restoreAllMocks();
   });
 
   it<IntegrationTestContext>("deletes an order and then deletes an item from a remaining order (with mocked gateway)", async (context) => {
@@ -117,13 +114,13 @@ describe(`${useOrderByIdSelector.name}: Delete Order and Item`, () => {
     };
     const ordersAfterItemDeletion = [updatedRemainingOrder, ...ordersAfterOrderDeletion.slice(1)];
 
-    context.ordersGateway.getOrders
+    context.ordersServiceMock.getOrders
       .mockResolvedValueOnce(initialOrders)
       .mockResolvedValueOnce(ordersAfterOrderDeletion)
       .mockResolvedValueOnce(ordersAfterItemDeletion);
 
-    context.ordersGateway.deleteOrder.mockResolvedValue();
-    context.ordersGateway.deleteItem.mockResolvedValue();
+    context.ordersServiceMock.deleteOrder.mockResolvedValue();
+    context.ordersServiceMock.deleteItem.mockResolvedValue();
 
     render(<context.Sut />);
 
@@ -134,23 +131,21 @@ describe(`${useOrderByIdSelector.name}: Delete Order and Item`, () => {
       firstOrderIdFromSelector: initialOrders.at(0)!.id,
     });
 
-    // Step 1: Delete the order
     const deleteOrderButton = screen.getByTestId(deleteOrderButtonTestId);
     context.user.click(deleteOrderButton);
     await vi.runAllTimersAsync();
 
-    expect(context.ordersGateway.deleteOrder).toHaveBeenCalledWith(orderToDelete.id);
+    expect(context.ordersServiceMock.deleteOrder).toHaveBeenCalledWith(orderToDelete.id);
     expect(screen.getByTestId(integrationOutputTestId)).toHaveOutput<IntegrationOutput>({
       orders: ordersAfterOrderDeletion,
       firstOrderIdFromSelector: ordersAfterOrderDeletion.at(0)!.id,
     });
 
-    // Step 2: Delete an item from a remaining order
     const deleteItemButton = screen.getByTestId(deleteItemButtonTestId);
     context.user.click(deleteItemButton);
     await vi.runAllTimersAsync();
 
-    expect(context.ordersGateway.deleteItem).toHaveBeenCalledWith(
+    expect(context.ordersServiceMock.deleteItem).toHaveBeenCalledWith(
       remainingOrderWithItem.id,
       itemToDelete.id,
     );
@@ -162,8 +157,6 @@ describe(`${useOrderByIdSelector.name}: Delete Order and Item`, () => {
   });
 
   it<IntegrationTestContext>("deletes an order and then deletes an item from a remaining order (with in memory gateway)", async (context) => {
-    restoreMockedUseOrdersGateway();
-
     const initialOrders = context.orderEntities;
     const remainingOrderWithItem = initialOrders.at(1)!;
     const ordersAfterOrderDeletion = initialOrders.slice(1);
@@ -174,7 +167,14 @@ describe(`${useOrderByIdSelector.name}: Delete Order and Item`, () => {
     };
     const ordersAfterItemDeletion = [updatedRemainingOrder, ...ordersAfterOrderDeletion.slice(1)];
 
-    InMemoryOrdersService.make(initialOrders);
+    const inMemoryService = InMemoryOrdersService.make(initialOrders);
+    context.ordersServiceMock.getOrders.mockImplementation(() => inMemoryService.getOrders());
+    context.ordersServiceMock.deleteOrder.mockImplementation((orderId) =>
+      inMemoryService.deleteOrder(orderId),
+    );
+    context.ordersServiceMock.deleteItem.mockImplementation((orderId, itemId) =>
+      inMemoryService.deleteItem(orderId, itemId),
+    );
 
     render(<context.Sut />);
 
@@ -185,7 +185,6 @@ describe(`${useOrderByIdSelector.name}: Delete Order and Item`, () => {
       firstOrderIdFromSelector: initialOrders.at(0)!.id,
     });
 
-    // Step 1: Delete the order
     const deleteOrderButton = screen.getByTestId(deleteOrderButtonTestId);
     context.user.click(deleteOrderButton);
     await vi.runAllTimersAsync();
@@ -195,7 +194,6 @@ describe(`${useOrderByIdSelector.name}: Delete Order and Item`, () => {
       firstOrderIdFromSelector: ordersAfterOrderDeletion.at(0)!.id,
     });
 
-    // Step 2: Delete an item from a remaining order
     const deleteItemButton = screen.getByTestId(deleteItemButtonTestId);
     context.user.click(deleteItemButton);
     await vi.runAllTimersAsync();

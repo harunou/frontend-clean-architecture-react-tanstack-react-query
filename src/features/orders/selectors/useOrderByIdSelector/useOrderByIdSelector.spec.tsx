@@ -3,12 +3,11 @@ import { describe, beforeEach, vi, afterEach, it, expect, assert } from "vitest"
 import { makeDeferred, output } from "../../../../utils/testing";
 import type { OrderEntity, OrderEntityId } from "../../repositories/ordersRepository";
 import { makeOrderEntityId } from "../../utils";
+import { makeOrderEntities, resetOrderEntitiesFactories } from "../../utils/testing";
 import {
-  type MockedOrdersGateway,
-  mockUseOrdersGateway,
-  makeOrderEntities,
-  resetOrderEntitiesFactories,
-} from "../../utils/testing";
+  makeOrdersServiceMock,
+  type MockedOrdersService,
+} from "../../repositories/ordersRepository/utils/testing";
 import { makeComponentFixture } from "../../utils/testing/makeComponentFixture";
 import { useOrderByIdSelector } from "./useOrderByIdSelector";
 import { render, screen } from "@testing-library/react";
@@ -16,8 +15,8 @@ import { render, screen } from "@testing-library/react";
 interface LocalTestContext {
   Fixture: FC<PropsWithChildren<unknown>>;
   Sut: FC<{ orderId: OrderEntityId }>;
-  ordersGateway: MockedOrdersGateway;
   orderEntities: OrderEntity[];
+  ordersServiceMock: MockedOrdersService;
 }
 
 type Output = {
@@ -27,6 +26,8 @@ type Output = {
 const outputTestId = "output-test-id";
 
 describe(`${useOrderByIdSelector.name}`, () => {
+  const ordersServiceMock = makeOrdersServiceMock();
+
   beforeEach<LocalTestContext>((context) => {
     vi.useFakeTimers();
     resetOrderEntitiesFactories();
@@ -51,31 +52,27 @@ describe(`${useOrderByIdSelector.name}`, () => {
         </Fixture>
       );
     };
-    context.ordersGateway = mockUseOrdersGateway();
-    // TODO: do not use 3
-    context.orderEntities = makeOrderEntities(3); // Create 3 orders for testing
+    context.orderEntities = makeOrderEntities(3);
+    context.ordersServiceMock = ordersServiceMock.mock;
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
     vi.useRealTimers();
   });
 
   it<LocalTestContext>("returns undefined when no orders are available", async (context) => {
     const orderId = makeOrderEntityId("9000");
-    context.ordersGateway.getOrders.mockResolvedValue([]);
+    context.ordersServiceMock.getOrders.mockResolvedValue([]);
 
     render(<context.Sut orderId={orderId} />);
 
     await vi.runAllTimersAsync();
 
-    // NOTE: The output is an empty object because `JSON.stringify` omits
-    // properties with `undefined` values.
     expect(screen.getByTestId(outputTestId)).toHaveOutput<Output>({});
   });
 
   it<LocalTestContext>("returns the correct order when it exists", async (context) => {
-    context.ordersGateway.getOrders.mockResolvedValue(context.orderEntities);
+    context.ordersServiceMock.getOrders.mockResolvedValue(context.orderEntities);
     const targetOrder = context.orderEntities.at(1);
     assert(targetOrder);
 
@@ -91,7 +88,7 @@ describe(`${useOrderByIdSelector.name}`, () => {
   });
 
   it<LocalTestContext>("returns undefined when the order with the given ID does not exist", async (context) => {
-    context.ordersGateway.getOrders.mockResolvedValue(context.orderEntities);
+    context.ordersServiceMock.getOrders.mockResolvedValue(context.orderEntities);
     const nonExistentOrderId = makeOrderEntityId("non-existent-id");
 
     render(<context.Sut orderId={nonExistentOrderId} />);
@@ -103,7 +100,7 @@ describe(`${useOrderByIdSelector.name}`, () => {
 
   it<LocalTestContext>("returns undefined while orders are being loaded", async (context) => {
     const { promise } = makeDeferred<OrderEntity[]>();
-    context.ordersGateway.getOrders.mockReturnValue(promise);
+    context.ordersServiceMock.getOrders.mockReturnValue(promise);
     const orderId = makeOrderEntityId("123");
 
     render(<context.Sut orderId={orderId} />);
@@ -114,7 +111,7 @@ describe(`${useOrderByIdSelector.name}`, () => {
   });
 
   it<LocalTestContext>("returns the first order when searching for the first order ID", async (context) => {
-    context.ordersGateway.getOrders.mockResolvedValue(context.orderEntities);
+    context.ordersServiceMock.getOrders.mockResolvedValue(context.orderEntities);
     const firstOrder = context.orderEntities.at(0);
     assert(firstOrder);
     const orderId = firstOrder.id;
@@ -129,7 +126,7 @@ describe(`${useOrderByIdSelector.name}`, () => {
   });
 
   it<LocalTestContext>("returns the last order when searching for the last order ID", async (context) => {
-    context.ordersGateway.getOrders.mockResolvedValue(context.orderEntities);
+    context.ordersServiceMock.getOrders.mockResolvedValue(context.orderEntities);
     const lastOrder = context.orderEntities.at(-1);
     assert(lastOrder);
     const orderId = lastOrder.id;

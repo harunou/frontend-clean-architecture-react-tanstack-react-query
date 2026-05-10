@@ -6,7 +6,7 @@ export type MockedOrdersService = Mocked<OrdersGateway>;
 
 function makeMockInstance(): MockedOrdersService {
   return {
-    getOrders: vi.fn<OrdersGateway["getOrders"]>(),
+    getOrders: vi.fn<OrdersGateway["getOrders"]>().mockResolvedValue([]),
     deleteOrder: vi.fn<OrdersGateway["deleteOrder"]>(),
     deleteItem: vi.fn<OrdersGateway["deleteItem"]>(),
   };
