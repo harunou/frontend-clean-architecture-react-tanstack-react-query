@@ -22,6 +22,7 @@
   "dependencies": {
     "@esfx/async-deferred": "^1.0.0",
     "@eslint/js": "^9.17.0",
+    "@tailwindcss/vite": "^4.3.0",
     "@tanstack/react-query": "^5.100.9",
     "@tanstack/react-query-devtools": "^5.100.9",
     "@testing-library/dom": "^10.4.0",
@@ -31,6 +32,7 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react-swc": "^3.5.0",
+    "daisyui": "^5.5.19",
     "dependency-cruiser": "^16.10.0",
     "eslint": "^9.17.0",
     "eslint-formatter-codeframe": "^7.32.1",
@@ -44,6 +46,7 @@
     "prettier": "^3.4.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "tailwindcss": "^4.3.0",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.18.2",
     "vite": "^6.0.5",
