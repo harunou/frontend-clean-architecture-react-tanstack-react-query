@@ -35,11 +35,10 @@ that includes a repository unit, which this application follows.
 
 - The **Repository unit** is responsible for managing server state, handling
   synchronization, and providing a consistent data interface to the rest of the
-  application.
+  application by compositing Gateway unit and Entities.
 - The **Gateway unit** abstracts communication with the API, transforming data
-  into a format suitable for the repository. Using a gateway is recommended when
-  an application deals with multiple API endpoints or stores data in various
-  locations (e.g., in-memory, on a server, or in browser storage).
+  into a format suitable for the repository. It provides consistent data
+  interface for the rest of the application.
 
 ## Dependency Graph
 
